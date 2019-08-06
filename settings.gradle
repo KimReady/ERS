@@ -1,0 +1,1 @@
+include ':app', ':error_reporting_sdk'
