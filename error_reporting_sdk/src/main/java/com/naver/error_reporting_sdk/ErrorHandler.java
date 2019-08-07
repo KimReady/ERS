@@ -1,5 +1,7 @@
 package com.naver.error_reporting_sdk;
 
+import com.naver.error_reporting_sdk.sender.DBSender;
+
 public class ErrorHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler defaultHandler;
     private boolean handled;
@@ -17,9 +19,17 @@ public class ErrorHandler implements Thread.UncaughtExceptionHandler {
             }
             handled = true;
 
-            Reporter.log.e(Reporter.LOG_TAG, e.getMessage());
-        } catch(Throwable tr) {
-            Reporter.log.e(Reporter.LOG_TAG, "Error has occurred while reporting exception.");
+            Reporter.log.e(Reporter.LOG_TAG, e.getMessage(), e);
+            ReportInfo reportInfo = Reporter.getInstance()
+                    .getReportInfo()
+                    .message(e.toString())
+                    .topOfStackTrace(e.getStackTrace()[0].toString())
+                    .build();
+            reportInfo.execute(new DBSender());
+        } catch(Exception tr) {
+            tr.printStackTrace();
+            Reporter.log.e(Reporter.LOG_TAG, "Error has occurred while reporting exception.\n" + tr.getMessage());
+        } finally {
             defaultHandler.uncaughtException(t, e);
         }
     }
