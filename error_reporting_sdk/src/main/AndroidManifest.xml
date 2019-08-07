@@ -1,2 +1,2 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.naver.error_reporting_sdk" />
+    package="com.naver.error_reporting_sdk"/>
