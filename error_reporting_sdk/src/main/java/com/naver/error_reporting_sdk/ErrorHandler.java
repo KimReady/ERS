@@ -1,33 +1,34 @@
 package com.naver.error_reporting_sdk;
 
-import com.naver.error_reporting_sdk.sender.DBSender;
+import android.content.Context;
+import android.util.Log;
 
 public class ErrorHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler defaultHandler;
     private boolean handled;
+    private Context context;
 
-    ErrorHandler(Thread.UncaughtExceptionHandler defaultHandler) {
+    ErrorHandler(Thread.UncaughtExceptionHandler defaultHandler, Context context) {
         this.defaultHandler = defaultHandler;
+        this.context = context;
     }
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
         try {
             if(handled) {
-                Reporter.log.w(Reporter.LOG_TAG, "ExceptionHandler has been already executed.");
+                Log.w(Reporter.LOG_TAG, "ExceptionHandler has been already executed.");
                 return;
             }
             handled = true;
 
-            Reporter.log.e(Reporter.LOG_TAG, e.getMessage(), e);
-            ReportInfo reportInfo = Reporter.getInstance()
-                    .getReportInfo()
+            ReportInfo reportInfo = new ReportInfo.Builder(context)
                     .message(e.toString())
                     .topOfStackTrace(e.getStackTrace()[0].toString())
                     .build();
-            reportInfo.execute(new DBSender());
+
+            Reporter.reportError(reportInfo);
         } catch(Exception tr) {
-            tr.printStackTrace();
             Reporter.log.e(Reporter.LOG_TAG, "Error has occurred while reporting exception.\n" + tr.getMessage());
         } finally {
             defaultHandler.uncaughtException(t, e);
