@@ -1,15 +1,21 @@
 package com.naver.error_reporting_sdk;
 
 import android.app.Application;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import com.naver.error_reporting_sdk.log.Logger;
 import com.naver.error_reporting_sdk.log.LoggerFacotry;
+import com.naver.error_reporting_sdk.sender.SenderService;
 
-public class Reporter {
+public final class Reporter {
     public static final String LOG_TAG = Reporter.class.getSimpleName();
 
-    private static final Reporter reporter = new Reporter();
+    @NonNull
     public static Logger log = LoggerFacotry.createStub();
 
     public static void register(Application application) {
@@ -19,26 +25,28 @@ public class Reporter {
             return;
         }
 
-        Thread.setDefaultUncaughtExceptionHandler(new ErrorHandler(defaultHandler));
-        log = LoggerFacotry.create();
-        reporter.init(application.getApplicationContext());
+        Context context = application.getApplicationContext();
+
+        Thread.setDefaultUncaughtExceptionHandler(new ErrorHandler(defaultHandler, context));
+
+        log = LoggerFacotry.create(context);
     }
 
-    private ReportInfo.Builder reportInfoBuilder;
+    public static void reportError(ReportInfo reportInfo) {
+        Context context = reportInfo.getContext();
 
-    private void init(Context context) {
-        this.reportInfoBuilder = new ReportInfo.Builder(context);
-    }
+        Intent intent = new Intent(context, SenderService.class);
+        intent.putExtra(ReportInfo.class.getSimpleName(), reportInfo);
 
-    public static Reporter getInstance() {
-        return reporter;
-    }
-
-    public ReportInfo.Builder getReportInfo() {
-        return reportInfoBuilder;
+        ComponentName service = context.startService(intent);
+        if(service == null) {
+            Log.w(Reporter.LOG_TAG, "Failed to start the Sender Service.");
+        }
     }
 
     public static void crash() {
         throw new AssertionError("Test Crash");
     }
+
+    private Reporter(){}
 }
