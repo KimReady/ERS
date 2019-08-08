@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 public class TimestampConverter {
-    public static DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
     @TypeConverter
     public static Date toTimestamp(String value) {

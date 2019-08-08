@@ -32,6 +32,9 @@ public class ErrorLog {
     @ColumnInfo(name = "PHONE_MODEL")
     private String phoneModel;
 
+    @ColumnInfo(name = "LOG_LEVEL")
+    private String logLevel;
+
     @ColumnInfo(name = "Message")
     private String message;
 
@@ -50,6 +53,7 @@ public class ErrorLog {
                     int sdkVersion,
                     String phoneBrand,
                     String phoneModel,
+                    String logLevel,
                     String message,
                     String stackTrace,
                     long availableMemory,
@@ -60,6 +64,7 @@ public class ErrorLog {
         this.sdkVersion = sdkVersion;
         this.phoneBrand = phoneBrand;
         this.phoneModel = phoneModel;
+        this.logLevel = logLevel;
         this.message = message;
         this.stackTrace = stackTrace;
         this.availableMemory = availableMemory;
@@ -73,6 +78,7 @@ public class ErrorLog {
         this.sdkVersion = reportInfo.getSdkVersion();
         this.phoneBrand = reportInfo.getPhoneBrand();
         this.phoneModel = reportInfo.getPhoneModel();
+        this.logLevel = reportInfo.getLogLevel();
         this.message = reportInfo.getMessage();
         this.stackTrace = reportInfo.getTopOfStackTrace();
         this.availableMemory = reportInfo.getAvailableMemory();
@@ -103,6 +109,10 @@ public class ErrorLog {
         return phoneModel;
     }
 
+    public String getLogLevel() {
+        return logLevel;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -128,6 +138,7 @@ public class ErrorLog {
                 ", sdkVersion=" + sdkVersion +
                 ", phoneBrand='" + phoneBrand + '\'' +
                 ", phoneModel='" + phoneModel + '\'' +
+                ", logLevel='" + logLevel + '\'' +
                 ", message='" + message + '\'' +
                 ", stackTrace='" + stackTrace + '\'' +
                 ", availableMemory=" + availableMemory +
