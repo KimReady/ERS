@@ -1,19 +1,24 @@
 package com.naver.error_reporting_sdk.log;
 
+import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.naver.error_reporting_sdk.ReportInfo;
+import com.naver.error_reporting_sdk.Reporter;
 
 class LoggerImpl implements Logger {
-    private ReportInfo info;
+    private final Context context;
 
-    LoggerImpl(ReportInfo info) {
-        this.info = info;
+    LoggerImpl(Context context) {
+        this.context = context;
     }
 
     @Override
     public int v(String tag, String msg) {
-        writeLog(LogLevel.VERBOSE, tag, msg);
+        writeLog(LogLevel.VERBOSE, tag, msg, null);
 
         return Log.v(tag, msg);
     }
@@ -27,7 +32,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int d(String tag, String msg) {
-        writeLog(LogLevel.DEBUG, tag, msg);
+        writeLog(LogLevel.DEBUG, tag, msg, null);
 
         return Log.d(tag, msg);
     }
@@ -41,7 +46,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int i(String tag, String msg) {
-        writeLog(LogLevel.INFO, tag, msg);
+        writeLog(LogLevel.INFO, tag, msg, null);
 
         return Log.i(tag, msg);
     }
@@ -55,7 +60,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int w(String tag, String msg) {
-        writeLog(LogLevel.WARNING, tag, msg);
+        writeLog(LogLevel.WARNING, tag, msg, null);
 
         return Log.w(tag, msg);
     }
@@ -69,7 +74,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int e(String tag, String msg) {
-        writeLog(LogLevel.ERROR, tag, msg);
+        writeLog(LogLevel.ERROR, tag, msg, null);
 
         return Log.e(tag, msg);
     }
@@ -86,14 +91,16 @@ class LoggerImpl implements Logger {
         return Log.getStackTraceString(tr);
     }
 
-    private synchronized void writeLog(LogLevel level, String tag, String msg, Throwable tr) {
-        StringBuilder builder = new StringBuilder(msg);
-        builder.append("\n");
-        builder.append(getStackTrace(tr));
-        writeLog(level, tag, builder.toString());
+    private void writeLog(@NonNull LogLevel level,
+                          @NonNull String tag,
+                          @NonNull String msg,
+                          @Nullable Throwable tr) {
+        ReportInfo reportInfo = new ReportInfo.Builder(context)
+                .logLevel(level)
+                .message(tag+": "+msg)
+                .topOfStackTrace(tr.getStackTrace()[0].toString())
+                .build();
+        Reporter.reportError(reportInfo);
     }
 
-    private synchronized void writeLog(LogLevel level, String tag, String msg) {
-        info.put(level.getName(), tag + msg);
-    }
 }

@@ -1,13 +1,12 @@
 package com.naver.error_reporting_sdk.log;
 
-import android.util.Log;
-
-import com.naver.error_reporting_sdk.ReportInfo;
+import android.content.Context;
 
 public class LoggerFacotry {
+    private LoggerFacotry(){}
 
-    public static Logger create() {
-        return new LoggerImpl(new ReportInfo());
+    public static Logger create(Context context) {
+        return new LoggerImpl(context);
     }
 
     public static Logger createStub() {
