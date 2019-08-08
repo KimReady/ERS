@@ -1,2 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.naver.error_reporting_sdk"/>
+    package="com.naver.error_reporting_sdk">
+    <application>
+        <service
+            android:name=".sender.SenderService"
+            android:exported="false"
+            android:process=":ers" />
+    </application>
+</manifest>
