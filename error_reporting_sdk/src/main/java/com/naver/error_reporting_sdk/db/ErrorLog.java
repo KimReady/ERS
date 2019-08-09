@@ -6,11 +6,13 @@ import androidx.room.Entity;
 import androidx.room.TypeConverters;
 
 import com.naver.error_reporting_sdk.ReportInfo;
+import com.naver.error_reporting_sdk.Reporter;
 
+import java.util.Calendar;
 import java.util.Date;
 
 @Entity(tableName = "error_log", primaryKeys = {"ANDROID_ID", "REG_DATE"})
-public class ErrorLog {
+public final class ErrorLog {
     @NonNull
     @TypeConverters({TimestampConverter.class})
     @ColumnInfo(name = "REG_DATE")
@@ -74,7 +76,7 @@ public class ErrorLog {
     public ErrorLog(ReportInfo reportInfo) {
         this.androidId = reportInfo.getAndroidId();
         this.packageName = reportInfo.getPackageName();
-        this.regDate = new Date();
+        this.regDate = correctDate();
         this.sdkVersion = reportInfo.getSdkVersion();
         this.phoneBrand = reportInfo.getPhoneBrand();
         this.phoneModel = reportInfo.getPhoneModel();
@@ -127,6 +129,12 @@ public class ErrorLog {
 
     public long getTotalMemory() {
         return totalMemory;
+    }
+
+    private Date correctDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+        return cal.getTime();
     }
 
     @Override

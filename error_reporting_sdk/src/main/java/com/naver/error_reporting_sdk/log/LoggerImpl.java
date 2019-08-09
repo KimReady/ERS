@@ -95,10 +95,11 @@ class LoggerImpl implements Logger {
                           @NonNull String tag,
                           @NonNull String msg,
                           @Nullable Throwable tr) {
+        String topOfStackTrace = tr != null ? tr.getStackTrace()[0].toString() : null;
         ReportInfo reportInfo = new ReportInfo.Builder(context)
                 .logLevel(level)
                 .message(tag+": "+msg)
-                .topOfStackTrace(tr.getStackTrace()[0].toString())
+                .topOfStackTrace(topOfStackTrace)
                 .build();
         Reporter.reportError(reportInfo);
     }

@@ -3,7 +3,7 @@ package com.naver.error_reporting_sdk;
 import android.content.Context;
 import android.util.Log;
 
-public class ErrorHandler implements Thread.UncaughtExceptionHandler {
+class ErrorHandler implements Thread.UncaughtExceptionHandler {
     private Thread.UncaughtExceptionHandler defaultHandler;
     private boolean handled;
     private Context context;

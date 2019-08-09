@@ -10,7 +10,7 @@ import android.provider.Settings.Secure;
 
 import com.naver.error_reporting_sdk.log.LogLevel;
 
-public class ReportInfo implements Parcelable {
+public final class ReportInfo implements Parcelable {
     private static final int SDK_VERSION = Build.VERSION.SDK_INT;
     private static final String PHONE_BRAND = Build.BRAND;
     private static final String PHONE_MODEL = Build.MODEL;
@@ -19,9 +19,10 @@ public class ReportInfo implements Parcelable {
     private String logLevel;
     private String message;
     private String topOfStackTrace;
-    private Context context;
     private long availableMemory;
     private long totalMemory;
+
+    private Context context;
 
     private ReportInfo(Builder builder) {
         this.androidId = builder.androidId;
@@ -133,7 +134,7 @@ public class ReportInfo implements Parcelable {
                 '}';
     }
 
-    static class Builder {
+    public static final class Builder {
         private final String androidId;
         private final String packageName;
         private String logLevel;
