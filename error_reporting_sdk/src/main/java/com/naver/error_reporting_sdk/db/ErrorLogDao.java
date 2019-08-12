@@ -9,8 +9,11 @@ import java.util.List;
 @Dao
 public interface ErrorLogDao {
     @Insert
-    void insertErrorLogs(ErrorLog... errorLogs);
+    void insertErrorLogs(List<ErrorLog> errorLogs);
 
     @Query("select * from error_log")
     List<ErrorLog> selectAllErrorLogs();
+
+    @Query("delete from error_log")
+    void deleteLogs();
 }

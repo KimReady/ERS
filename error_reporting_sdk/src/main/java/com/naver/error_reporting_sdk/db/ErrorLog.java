@@ -3,55 +3,68 @@ package com.naver.error_reporting_sdk.db;
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
-import androidx.room.TypeConverters;
 
+import com.google.gson.annotations.SerializedName;
 import com.naver.error_reporting_sdk.ReportInfo;
 import com.naver.error_reporting_sdk.Reporter;
 
 import java.util.Calendar;
 import java.util.Date;
 
-@Entity(tableName = "error_log", primaryKeys = {"ANDROID_ID", "REG_DATE"})
+@Entity(tableName = "error_log", primaryKeys = {"android_id", "reg_date"})
 public final class ErrorLog {
     @NonNull
-    @TypeConverters({TimestampConverter.class})
-    @ColumnInfo(name = "REG_DATE")
-    private Date regDate;
+    @ColumnInfo(name = "reg_date")
+    @SerializedName(value = "reg_date")
+    private String regDate;
 
     @NonNull
-    @ColumnInfo(name = "ANDROID_ID")
+    @ColumnInfo(name = "android_id")
+    @SerializedName(value = "android_id")
     private String androidId;
 
-    @ColumnInfo(name = "PACKAGE_NAME")
+    @ColumnInfo(name = "package_name")
+    @SerializedName(value = "package_name")
     private String packageName;
 
-    @ColumnInfo(name = "SDK_VERSION")
+    @ColumnInfo(name = "sdk_version")
+    @SerializedName(value = "sdk_version")
     private int sdkVersion;
 
-    @ColumnInfo(name = "PHONE_BRAND")
+    @ColumnInfo(name = "phone_brand")
+    @SerializedName(value = "phone_brand")
     private String phoneBrand;
 
-    @ColumnInfo(name = "PHONE_MODEL")
+    @ColumnInfo(name = "phone_model")
+    @SerializedName(value = "phone_model")
     private String phoneModel;
 
-    @ColumnInfo(name = "LOG_LEVEL")
+    @ColumnInfo(name = "log_level")
+    @SerializedName(value = "log_level")
     private String logLevel;
 
-    @ColumnInfo(name = "Message")
+    @ColumnInfo(name = "message")
+    @SerializedName(value = "message")
     private String message;
 
-    @ColumnInfo(name = "StackTrace")
+    @ColumnInfo(name = "stacktrace")
+    @SerializedName(value = "stacktrace")
     private String stackTrace;
 
-    @ColumnInfo(name = "Available_Memory")
+    @ColumnInfo(name = "available_memory")
+    @SerializedName(value = "available_memory")
     private long availableMemory;
 
-    @ColumnInfo(name = "Total_Memory")
+    @ColumnInfo(name = "total_memory")
+    @SerializedName(value = "total_memory")
     private long totalMemory;
+
+    @ColumnInfo(name = "is_correct_date")
+    private boolean isCorrectDate;
 
     public ErrorLog(@NonNull String androidId,
                     String packageName,
-                    @NonNull Date regDate,
+                    @NonNull String regDate,
                     int sdkVersion,
                     String phoneBrand,
                     String phoneModel,
@@ -59,7 +72,8 @@ public final class ErrorLog {
                     String message,
                     String stackTrace,
                     long availableMemory,
-                    long totalMemory) {
+                    long totalMemory,
+                    boolean isCorrectDate) {
         this.androidId = androidId;
         this.packageName = packageName;
         this.regDate = regDate;
@@ -71,20 +85,22 @@ public final class ErrorLog {
         this.stackTrace = stackTrace;
         this.availableMemory = availableMemory;
         this.totalMemory = totalMemory;
+        this.isCorrectDate = isCorrectDate;
     }
 
     public ErrorLog(ReportInfo reportInfo) {
         this.androidId = reportInfo.getAndroidId();
         this.packageName = reportInfo.getPackageName();
-        this.regDate = correctDate();
+        this.regDate = TimestampConverter.fromTimestamp(correctDate());
         this.sdkVersion = reportInfo.getSdkVersion();
         this.phoneBrand = reportInfo.getPhoneBrand();
         this.phoneModel = reportInfo.getPhoneModel();
         this.logLevel = reportInfo.getLogLevel();
         this.message = reportInfo.getMessage();
-        this.stackTrace = reportInfo.getTopOfStackTrace();
+        this.stackTrace = reportInfo.getStackTrace();
         this.availableMemory = reportInfo.getAvailableMemory();
         this.totalMemory = reportInfo.getTotalMemory();
+        this.isCorrectDate = Reporter.hasDiffTime();
     }
 
     public String getAndroidId() {
@@ -95,7 +111,7 @@ public final class ErrorLog {
         return packageName;
     }
 
-    public Date getRegDate() {
+    public String getRegDate() {
         return regDate;
     }
 
@@ -131,9 +147,24 @@ public final class ErrorLog {
         return totalMemory;
     }
 
+    public boolean isCorrectDate() {
+        return isCorrectDate;
+    }
+
+    public void addDiffTimeWithServer() {
+        if(Reporter.hasDiffTime()) {
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(TimestampConverter.toTimestamp(regDate));
+            cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+            isCorrectDate = true;
+        }
+    }
+
     private Date correctDate() {
         Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+        if(Reporter.hasDiffTime()) {
+            cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+        }
         return cal.getTime();
     }
 
@@ -151,6 +182,7 @@ public final class ErrorLog {
                 ", stackTrace='" + stackTrace + '\'' +
                 ", availableMemory=" + availableMemory +
                 ", totalMemory=" + totalMemory +
+                ", isCorrectDate=" + isCorrectDate +
                 '}';
     }
 }

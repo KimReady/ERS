@@ -25,8 +25,9 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public final class Reporter {
-    public static final String LOG_TAG = Reporter.class.getSimpleName();
-    private static final String SERVER_TIME_URL = "http://10.66.83.50:8000/ers/time/";
+    static final String LOG_TAG = Reporter.class.getSimpleName();
+    private static final String TIME_URL = "/time";
+
     private static int diffTimeWithServer;
     private static boolean hasDiffTime;
 
@@ -45,7 +46,7 @@ public final class Reporter {
         Thread.setDefaultUncaughtExceptionHandler(new ErrorHandler(defaultHandler, context));
 
         log = LoggerFacotry.create(context);
-        setDifferentTimeFromServer();
+        setDifferentTimeFromServer(context);
     }
 
     public static void reportError(ReportInfo reportInfo) {
@@ -56,7 +57,7 @@ public final class Reporter {
 
         ComponentName service = context.startService(intent);
         if (service == null) {
-            Log.w(Reporter.LOG_TAG, "Failed to start the Sender Service.");
+            Log.w(LOG_TAG, "Failed to start the Sender Service.");
         }
     }
 
@@ -72,12 +73,16 @@ public final class Reporter {
         return hasDiffTime;
     }
 
-    public static void setDifferentTimeFromServer() {
+    public static void setDifferentTimeFromServer(Context context) {
         HttpClient httpClient = new HttpClient.Builder()
                 .build();
         HttpService httpService = httpClient.create(HttpService.class);
-        final CallTask<ServerTime> call = httpService.getServerTimeWithDynamicURL(SERVER_TIME_URL);
+
+        final CallTask<ServerTime> call = httpService.getServerTimeWithDynamicURL(
+                context.getResources().getString(R.string.server_url) + TIME_URL
+        );
         final CountDownLatch latch = new CountDownLatch(1);
+
         call.enqueue(new CallBack<ServerTime>() {
             @Override
             public void onResponse(Response<ServerTime> response) throws IOException {
@@ -91,14 +96,14 @@ public final class Reporter {
 
             @Override
             public void onFailure(IOException e) {
-                log.e(Reporter.LOG_TAG, "Failed to get time from server. : " + e.getMessage());
+                Log.e(LOG_TAG, "Failed to get time from server. : " + e.getMessage());
                 latch.countDown();
             }
         });
         try {
             latch.await(1000, TimeUnit.MILLISECONDS);
         } catch(InterruptedException e) {
-            log.e(Reporter.LOG_TAG, "Failed to get time from server. : " + e.getMessage());
+            Log.e(LOG_TAG, "Failed to get time from server. : " + e.getMessage());
         }
     }
 

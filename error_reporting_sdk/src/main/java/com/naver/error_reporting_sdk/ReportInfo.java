@@ -18,7 +18,7 @@ public final class ReportInfo implements Parcelable {
     private String packageName;
     private String logLevel;
     private String message;
-    private String topOfStackTrace;
+    private String stackTrace;
     private long availableMemory;
     private long totalMemory;
 
@@ -29,7 +29,7 @@ public final class ReportInfo implements Parcelable {
         this.packageName = builder.packageName;
         this.logLevel = builder.logLevel;
         this.message = builder.message;
-        this.topOfStackTrace = builder.topOfStackTrace;
+        this.stackTrace = builder.stackTrace;
         this.context = builder.context;
         this.availableMemory = builder.getAvailableInternalMemorySize();
         this.totalMemory = builder.getTotalInternalMemorySize();
@@ -40,7 +40,7 @@ public final class ReportInfo implements Parcelable {
         this.packageName = parcel.readString();
         this.logLevel = parcel.readString();
         this.message = parcel.readString();
-        this.topOfStackTrace = parcel.readString();
+        this.stackTrace = parcel.readString();
         this.availableMemory = parcel.readLong();
         this.totalMemory = parcel.readLong();
     }
@@ -67,7 +67,7 @@ public final class ReportInfo implements Parcelable {
         dest.writeString(packageName);
         dest.writeString(logLevel);
         dest.writeString(message);
-        dest.writeString(topOfStackTrace);
+        dest.writeString(stackTrace);
         dest.writeLong(availableMemory);
         dest.writeLong(totalMemory);
     }
@@ -93,8 +93,8 @@ public final class ReportInfo implements Parcelable {
         return packageName;
     }
 
-    public String getTopOfStackTrace() {
-        return topOfStackTrace;
+    public String getStackTrace() {
+        return stackTrace;
     }
 
     public String getLogLevel() {
@@ -127,7 +127,7 @@ public final class ReportInfo implements Parcelable {
                 ", packageName='" + packageName + '\'' +
                 ", logLevel='" + logLevel + '\'' +
                 ", message='" + message + '\'' +
-                ", topOfStackTrace='" + topOfStackTrace + '\'' +
+                ", StackTrace='" + stackTrace + '\'' +
                 ", context=" + context +
                 ", availableMemory=" + availableMemory +
                 ", totalMemory=" + totalMemory +
@@ -140,7 +140,7 @@ public final class ReportInfo implements Parcelable {
         private String logLevel;
         private String message;
         private Context context;
-        private String topOfStackTrace;
+        private String stackTrace;
 
         public Builder(Context context) {
             this.context = context;
@@ -159,8 +159,8 @@ public final class ReportInfo implements Parcelable {
             return this;
         }
 
-        public Builder topOfStackTrace(String topOfStackTrace) {
-            this.topOfStackTrace = topOfStackTrace;
+        public Builder stackTrace(String stackTrace) {
+            this.stackTrace = stackTrace;
             return this;
         }
 
