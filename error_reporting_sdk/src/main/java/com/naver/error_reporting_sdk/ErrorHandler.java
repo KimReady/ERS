@@ -3,6 +3,7 @@ package com.naver.error_reporting_sdk;
 import android.content.Context;
 import android.util.Log;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
@@ -20,6 +21,8 @@ class ErrorHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
         try {
             if(handled) {
                 Log.w(LOG_TAG, "ExceptionHandler has been already executed.");
@@ -27,8 +30,6 @@ class ErrorHandler implements Thread.UncaughtExceptionHandler {
             }
             handled = true;
 
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
             if(e != null) {
                 e.printStackTrace(pw);
             }
@@ -41,9 +42,15 @@ class ErrorHandler implements Thread.UncaughtExceptionHandler {
 
             Reporter.reportError(reportInfo);
         } catch(Exception tr) {
-            Reporter.log.e(LOG_TAG, "Error has occurred while reporting exception.\n" + tr.getMessage());
+            Reporter.log.e(LOG_TAG, "Error has occurred while reporting exception. : " + tr.getMessage());
         } finally {
             defaultHandler.uncaughtException(t, e);
+            try {
+                sw.close();
+                pw.close();
+            } catch(IOException ex) {
+                Reporter.log.e(LOG_TAG, "Error has occurred while closing StringWriter. : " + ex.getMessage());
+            }
         }
     }
 }

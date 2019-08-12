@@ -8,6 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.naver.error_reporting_sdk.annotation.ErrorReporter;
 import com.naver.error_reporting_sdk.db.ServerTime;
 import com.naver.error_reporting_sdk.db.TimestampConverter;
 import com.naver.error_reporting_sdk.log.Logger;
@@ -20,12 +21,17 @@ import com.naver.httpclientlib.HttpClient;
 import com.naver.httpclientlib.Response;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
 public final class Reporter {
-    static final String LOG_TAG = Reporter.class.getSimpleName();
+    private static final String LOG_TAG = Reporter.class.getSimpleName();
+
+    private static String company;
+    private static String name;
+    private static String email;
 
     private static int diffTimeWithServer;
     private static boolean hasDiffTime;
@@ -39,6 +45,11 @@ public final class Reporter {
             log.w(LOG_TAG, "Reporter has been registered already.");
             return;
         }
+
+        Annotation annotation = application.getClass().getAnnotation(ErrorReporter.class);
+        company = annotation != null ? ((ErrorReporter) annotation).company() : "";
+        name = annotation != null ? ((ErrorReporter) annotation).name() : "";
+        email = annotation != null ? ((ErrorReporter) annotation).email() : "";
 
         Context context = application.getApplicationContext();
 
@@ -72,6 +83,18 @@ public final class Reporter {
         return hasDiffTime;
     }
 
+    public static String getCompany() {
+        return company;
+    }
+
+    public static String getName() {
+        return name;
+    }
+
+    public static String getEmail() {
+        return email;
+    }
+
     public static void setDifferentTimeFromServer(Context context) {
         HttpClient httpClient = new HttpClient.Builder()
                 .baseUrl(context.getResources().getString(R.string.server_url))
@@ -101,11 +124,14 @@ public final class Reporter {
             }
         });
         try {
-            latch.await(1000, TimeUnit.MILLISECONDS);
-        } catch(InterruptedException e) {
+            if(!latch.await(1000, TimeUnit.MILLISECONDS)) {
+                Log.e(LOG_TAG, "Failed to get time from server. : Timeout");
+            }
+        } catch (InterruptedException e) {
             Log.e(LOG_TAG, "Failed to get time from server. : " + e.getMessage());
         }
     }
 
-    private Reporter() { }
+    private Reporter() {
+    }
 }

@@ -59,6 +59,18 @@ public final class ErrorLog {
     @SerializedName(value = "total_memory")
     private long totalMemory;
 
+    @ColumnInfo(name = "company")
+    @SerializedName(value = "company")
+    private String company;
+
+    @ColumnInfo(name = "name")
+    @SerializedName(value = "name")
+    private String name;
+
+    @ColumnInfo(name = "email")
+    @SerializedName(value = "email")
+    private String email;
+
     @ColumnInfo(name = "is_correct_date")
     private boolean isCorrectDate;
 
@@ -73,6 +85,9 @@ public final class ErrorLog {
                     String stackTrace,
                     long availableMemory,
                     long totalMemory,
+                    String company,
+                    String name,
+                    String email,
                     boolean isCorrectDate) {
         this.androidId = androidId;
         this.packageName = packageName;
@@ -85,6 +100,9 @@ public final class ErrorLog {
         this.stackTrace = stackTrace;
         this.availableMemory = availableMemory;
         this.totalMemory = totalMemory;
+        this.company = company;
+        this.name = name;
+        this.email = email;
         this.isCorrectDate = isCorrectDate;
     }
 
@@ -100,6 +118,9 @@ public final class ErrorLog {
         this.stackTrace = reportInfo.getStackTrace();
         this.availableMemory = reportInfo.getAvailableMemory();
         this.totalMemory = reportInfo.getTotalMemory();
+        this.company = Reporter.getCompany();
+        this.name = Reporter.getName();
+        this.email = Reporter.getEmail();
         this.isCorrectDate = Reporter.hasDiffTime();
     }
 
@@ -147,6 +168,18 @@ public final class ErrorLog {
         return totalMemory;
     }
 
+    public String getCompany() {
+        return company;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public boolean isCorrectDate() {
         return isCorrectDate;
     }
@@ -182,6 +215,9 @@ public final class ErrorLog {
                 ", stackTrace='" + stackTrace + '\'' +
                 ", availableMemory=" + availableMemory +
                 ", totalMemory=" + totalMemory +
+                ", company=" + company +
+                ", name=" + name +
+                ", email=" + email +
                 ", isCorrectDate=" + isCorrectDate +
                 '}';
     }

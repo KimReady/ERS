@@ -16,8 +16,8 @@ import java.util.List;
 
 class HttpSender {
     private static final String LOG_TAG = HttpSender.class.getSimpleName();
-    Context context;
-    List<ErrorLog> errorLogs;
+    private Context context;
+    private List<ErrorLog> errorLogs;
 
     HttpSender(Context context, List<ErrorLog> localLogs) {
         this.context = context;
