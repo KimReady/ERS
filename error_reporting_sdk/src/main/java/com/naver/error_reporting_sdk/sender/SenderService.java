@@ -6,25 +6,42 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.room.Room;
 
 import com.naver.error_reporting_sdk.ReportInfo;
-import com.naver.error_reporting_sdk.Reporter;
+import com.naver.error_reporting_sdk.db.ErrorLog;
+import com.naver.error_reporting_sdk.db.ErrorLogDao;
+import com.naver.error_reporting_sdk.db.LogDatabase;
 
-public class SenderService extends Service {
+import java.util.List;
+
+public final class SenderService extends Service {
+    static final String LOG_TAG = SenderService.class.getSimpleName();
+
     private ReportInfo reportInfo;
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
-        reportInfo = intent.getParcelableExtra(ReportInfo.class.getSimpleName());
-        Log.d(Reporter.LOG_TAG, "success to start service!");
+        if(intent != null) {
+            reportInfo = intent.getParcelableExtra(ReportInfo.class.getSimpleName());
+        }
         if(reportInfo != null) {
-            Log.d(Reporter.LOG_TAG, "try to send!");
+            Log.d(LOG_TAG, "try to send!");
 
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    Sender sender = new DBSender(SenderService.this);
-                    sender.send(reportInfo);
+                    LogDatabase db = Room.databaseBuilder(
+                            SenderService.this, LogDatabase.class, LogDatabase.DB_NAME)
+                            .build();
+                    ErrorLogDao dao = db.errorLogDao();
+
+                    List<ErrorLog> localLogs = dao.selectAllErrorLogs();
+                    dao.deleteLogs();
+                    db.close();
+
+                    new HttpSender(SenderService.this, localLogs).send(reportInfo);
+
                     stopSelf();
                 }
             }).start();
