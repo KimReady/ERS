@@ -166,12 +166,20 @@ public final class ReportInfo implements Parcelable {
 
         private long getAvailableInternalMemorySize() {
             StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
-            return stat.getAvailableBlocks() * stat.getBlockSize();
+            if(SDK_VERSION >= 18) {
+                return stat.getAvailableBlocksLong() * stat.getBlockSizeLong();
+            } else {
+                return stat.getAvailableBlocks() * stat.getBlockSize();
+            }
         }
 
         private long getTotalInternalMemorySize() {
             StatFs stat = new StatFs(Environment.getDataDirectory().getPath());
-            return stat.getBlockCount() * stat.getBlockSize();
+            if(SDK_VERSION >= 18) {
+                return stat.getBlockCountLong() * stat.getBlockSizeLong();
+            } else {
+                return stat.getBlockCount() * stat.getBlockSize();
+            }
         }
 
         public ReportInfo build() {
