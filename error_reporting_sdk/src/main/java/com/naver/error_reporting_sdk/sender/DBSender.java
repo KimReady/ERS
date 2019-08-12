@@ -5,32 +5,30 @@ import android.util.Log;
 
 import androidx.room.Room;
 
-import com.naver.error_reporting_sdk.ReportInfo;
-import com.naver.error_reporting_sdk.Reporter;
 import com.naver.error_reporting_sdk.db.ErrorLog;
 import com.naver.error_reporting_sdk.db.ErrorLogDao;
 import com.naver.error_reporting_sdk.db.LogDatabase;
 
 import java.util.List;
 
-public class DBSender implements Sender {
-    private static final String DB_NAME = Reporter.class.getSimpleName();
+class DBSender {
+    static final String LOG_TAG = DBSender.class.getSimpleName();
     private final Context context;
 
-    public DBSender(Context context) {
+    DBSender(Context context) {
         this.context = context;
     }
 
-    @Override
-    public void send(final ReportInfo reportInfo) {
-        LogDatabase db = Room.databaseBuilder(context, LogDatabase.class, DB_NAME).build();
+    void send(List<ErrorLog> errorLog) {
+        LogDatabase db = Room.databaseBuilder(context, LogDatabase.class, LogDatabase.DB_NAME).build();
         ErrorLogDao dao = db.errorLogDao();
 
-        dao.insertErrorLogs(new ErrorLog(reportInfo));
+        dao.insertErrorLogs(errorLog);
         List<ErrorLog> errorLogs = dao.selectAllErrorLogs();
         for (ErrorLog log : errorLogs) {
-            Log.d(Reporter.LOG_TAG, log.toString());
+            Log.d(LOG_TAG, log.toString());
         }
+        db.close();
     }
 }
 
