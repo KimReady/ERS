@@ -2,15 +2,14 @@ package com.naver.error_reporting_sdk;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.os.StatFs;
 import android.provider.Settings.Secure;
 
 import com.naver.error_reporting_sdk.log.LogLevel;
 
-public final class ReportInfo implements Parcelable {
+public final class ReportInfo {
     private static final int SDK_VERSION = Build.VERSION.SDK_INT;
     private static final String PHONE_BRAND = Build.BRAND;
     private static final String PHONE_MODEL = Build.MODEL;
@@ -35,43 +34,15 @@ public final class ReportInfo implements Parcelable {
         this.totalMemory = builder.getTotalInternalMemorySize();
     }
 
-    private ReportInfo(Parcel parcel) {
-        this.androidId = parcel.readString();
-        this.packageName = parcel.readString();
-        this.logLevel = parcel.readString();
-        this.message = parcel.readString();
-        this.stackTrace = parcel.readString();
-        this.availableMemory = parcel.readLong();
-        this.totalMemory = parcel.readLong();
+    public ReportInfo(Bundle bundle) {
+        this.androidId = bundle.getString("android_id");
+        this.packageName = bundle.getString("package_name");
+        this.logLevel = bundle.getString("log_level");
+        this.message = bundle.getString("message");
+        this.stackTrace = bundle.getString("stacktrace");
+        this.availableMemory = bundle.getLong("available_memory");
+        this.totalMemory = bundle.getLong("total_memory");
     }
-
-    public static final Parcelable.Creator<ReportInfo> CREATOR = new Parcelable.Creator<ReportInfo>() {
-        @Override
-        public ReportInfo createFromParcel(Parcel parcel) {
-            return new ReportInfo(parcel);
-        }
-        @Override
-        public ReportInfo[] newArray(int size) {
-            return new ReportInfo[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(androidId);
-        dest.writeString(packageName);
-        dest.writeString(logLevel);
-        dest.writeString(message);
-        dest.writeString(stackTrace);
-        dest.writeLong(availableMemory);
-        dest.writeLong(totalMemory);
-    }
-
 
     public String getAndroidId() {
         return androidId;
@@ -115,6 +86,18 @@ public final class ReportInfo implements Parcelable {
 
     public long getTotalMemory() {
         return totalMemory;
+    }
+
+    public Bundle makeBundle() {
+        Bundle bundle = new Bundle();
+        bundle.putString("android_id", androidId);
+        bundle.putString("package_name", packageName);
+        bundle.putString("log_level", logLevel);
+        bundle.putString("message", message);
+        bundle.putString("stacktrace", stackTrace);
+        bundle.putLong("available_memory", availableMemory);
+        bundle.putLong("total_memory", totalMemory);
+        return bundle;
     }
 
     @Override

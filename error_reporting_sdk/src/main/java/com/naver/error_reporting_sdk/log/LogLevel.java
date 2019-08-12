@@ -7,7 +7,7 @@ public enum LogLevel {
     WARNING("WARNING"),
     ERROR("ERROR");
 
-    private String name;
+    private final String name;
 
     LogLevel(String name) {
         this.name = name;

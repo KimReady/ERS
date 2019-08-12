@@ -2,6 +2,7 @@ package com.naver.error_reporting_sdk.sender;
 
 import android.app.Service;
 import android.content.Intent;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -23,7 +24,8 @@ public final class SenderService extends Service {
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         if(intent != null) {
-            reportInfo = intent.getParcelableExtra(ReportInfo.class.getSimpleName());
+            Bundle bundleReportInfo = intent.getBundleExtra(ReportInfo.class.getSimpleName());
+            reportInfo = new ReportInfo(bundleReportInfo);
         }
         if(reportInfo != null) {
             Log.d(LOG_TAG, "try to send!");
@@ -32,7 +34,7 @@ public final class SenderService extends Service {
                 @Override
                 public void run() {
                     LogDatabase db = Room.databaseBuilder(
-                            SenderService.this, LogDatabase.class, LogDatabase.DB_NAME)
+                            reportInfo.getContext(), LogDatabase.class, LogDatabase.DB_NAME)
                             .build();
                     ErrorLogDao dao = db.errorLogDao();
 
@@ -40,7 +42,7 @@ public final class SenderService extends Service {
                     dao.deleteLogs();
                     db.close();
 
-                    new HttpSender(SenderService.this, localLogs).send(reportInfo);
+                    new HttpSender(reportInfo.getContext(), localLogs).send(reportInfo);
 
                     stopSelf();
                 }

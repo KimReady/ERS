@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import com.google.gson.annotations.SerializedName;
 import com.naver.error_reporting_sdk.ReportInfo;
 import com.naver.error_reporting_sdk.Reporter;
+import com.naver.error_reporting_sdk.UserInfo;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -118,9 +119,10 @@ public final class ErrorLog {
         this.stackTrace = reportInfo.getStackTrace();
         this.availableMemory = reportInfo.getAvailableMemory();
         this.totalMemory = reportInfo.getTotalMemory();
-        this.company = Reporter.getCompany();
-        this.name = Reporter.getName();
-        this.email = Reporter.getEmail();
+        UserInfo userInfo = Reporter.getUserInfo();
+        this.company = userInfo.getCompany();
+        this.name = userInfo.getUserName();
+        this.email = userInfo.getEmail();
         this.isCorrectDate = Reporter.hasDiffTime();
     }
 
