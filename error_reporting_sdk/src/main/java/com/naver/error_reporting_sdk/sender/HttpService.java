@@ -4,14 +4,13 @@ import com.naver.error_reporting_sdk.db.ErrorLog;
 import com.naver.error_reporting_sdk.db.ServerTime;
 import com.naver.httpclientlib.CallTask;
 import com.naver.httpclientlib.RequestMethod;
-import com.naver.httpclientlib.annotation.DynamicURL;
 import com.naver.httpclientlib.annotation.RequestBody;
-import com.naver.httpclientlib.annotation.URL;
+import com.naver.httpclientlib.annotation.RequestMapping;
 
 public interface HttpService {
-    @DynamicURL(method=RequestMethod.GET)
-    CallTask<ServerTime> getServerTimeWithDynamicURL(@URL String url);
+    @RequestMapping(value = "/ers/time", method=RequestMethod.GET)
+    CallTask<ServerTime> getServerTimeWithDynamicURL();
 
-    @DynamicURL(method=RequestMethod.POST)
-    CallTask<ErrorLog> postLog(@URL String url, @RequestBody ErrorLog log);
+    @RequestMapping(value = "/ers/report", method=RequestMethod.POST)
+    CallTask<ErrorLog> postLog(@RequestBody ErrorLog log);
 }

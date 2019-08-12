@@ -16,7 +16,6 @@ import java.util.List;
 
 class HttpSender {
     private static final String LOG_TAG = HttpSender.class.getSimpleName();
-    private static final String REPORT_URL = "/report";
     Context context;
     List<ErrorLog> errorLogs;
 
@@ -28,11 +27,12 @@ class HttpSender {
     void send(ReportInfo reportInfo) {
         errorLogs.add(new ErrorLog(reportInfo));
 
-        HttpClient httpClient = new HttpClient.Builder().build();
+        HttpClient httpClient = new HttpClient.Builder()
+                .baseUrl(context.getResources().getString(R.string.server_url))
+                .build();
         HttpService httpService = httpClient.create(HttpService.class);
 
         List<ErrorLog> failedLogs = new ArrayList<>();
-        final String report_url = context.getResources().getString(R.string.server_url) + REPORT_URL;
 
         if(!Reporter.hasDiffTime()) {
             Reporter.setDifferentTimeFromServer(context);
@@ -43,7 +43,7 @@ class HttpSender {
                 localLog.addDiffTimeWithServer();
             }
 
-            CallTask<ErrorLog> callTask = httpService.postLog(report_url, localLog);
+            CallTask<ErrorLog> callTask = httpService.postLog(localLog);
             try {
                 if(!callTask.execute().isSuccessful()) {
                     throw new IllegalStateException();

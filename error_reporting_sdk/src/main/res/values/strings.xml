@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">error_reporting_sdk</string>
-    <string name="server_url">http://10.66.83.45:8000/ers</string>
+    <string name="server_url">http://10.66.83.45:8000</string>
 </resources>

@@ -26,7 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 public final class Reporter {
     static final String LOG_TAG = Reporter.class.getSimpleName();
-    private static final String TIME_URL = "/time";
 
     private static int diffTimeWithServer;
     private static boolean hasDiffTime;
@@ -75,12 +74,13 @@ public final class Reporter {
 
     public static void setDifferentTimeFromServer(Context context) {
         HttpClient httpClient = new HttpClient.Builder()
+                .baseUrl(context.getResources().getString(R.string.server_url))
                 .build();
+
+
         HttpService httpService = httpClient.create(HttpService.class);
 
-        final CallTask<ServerTime> call = httpService.getServerTimeWithDynamicURL(
-                context.getResources().getString(R.string.server_url) + TIME_URL
-        );
+        final CallTask<ServerTime> call = httpService.getServerTimeWithDynamicURL();
         final CountDownLatch latch = new CountDownLatch(1);
 
         call.enqueue(new CallBack<ServerTime>() {
