@@ -9,6 +9,9 @@ import androidx.annotation.Nullable;
 import com.naver.error_reporting_sdk.ReportInfo;
 import com.naver.error_reporting_sdk.Reporter;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 class LoggerImpl implements Logger {
     private final Context context;
 
@@ -95,11 +98,16 @@ class LoggerImpl implements Logger {
                           @NonNull String tag,
                           @NonNull String msg,
                           @Nullable Throwable tr) {
-        String topOfStackTrace = tr != null ? tr.getStackTrace()[0].toString() : null;
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        if(tr != null) {
+            tr.printStackTrace(pw);
+        }
+        String stackTrace = tr != null ? sw.toString() : "";
         ReportInfo reportInfo = new ReportInfo.Builder(context)
                 .logLevel(level)
                 .message(tag+": "+msg)
-                .topOfStackTrace(topOfStackTrace)
+                .stackTrace(stackTrace)
                 .build();
         Reporter.reportError(reportInfo);
     }
