@@ -12,7 +12,7 @@ import com.naver.error_reporting_sdk.Reporter;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-class LoggerImpl implements Logger {
+final class LoggerImpl implements Logger {
     private final Context context;
 
     LoggerImpl(Context context) {

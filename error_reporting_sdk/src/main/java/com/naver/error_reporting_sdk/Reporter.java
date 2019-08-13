@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -31,6 +32,7 @@ public final class Reporter {
     private static int diffTimeWithServer;
     private static AtomicBoolean hasDiffTime = new AtomicBoolean(false);
 
+    private static String appVersion;
     private static UserInfo userInfo;
 
     @NonNull
@@ -46,6 +48,14 @@ public final class Reporter {
         Context context = application.getApplicationContext();
 
         Thread.setDefaultUncaughtExceptionHandler(new ErrorHandler(defaultHandler, context));
+
+        try {
+            appVersion = context.getPackageManager()
+                    .getPackageInfo(context.getPackageName(), 0)
+                    .versionName;
+        } catch(PackageManager.NameNotFoundException e) {
+            Log.e(LOG_TAG, "Failed to get Version Info : " + e.getMessage());
+        }
 
         log = LoggerFactory.create(context);
         setDifferentTimeFromServer(context);
@@ -81,6 +91,10 @@ public final class Reporter {
 
     public static UserInfo getUserInfo() {
         return userInfo;
+    }
+
+    public static String getAppVersion() {
+        return appVersion;
     }
 
     public static synchronized void setDifferentTimeFromServer(Context context) {

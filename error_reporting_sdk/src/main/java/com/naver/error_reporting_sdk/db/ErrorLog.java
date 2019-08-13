@@ -28,6 +28,10 @@ public final class ErrorLog {
     @SerializedName(value = "package_name")
     private String packageName;
 
+    @ColumnInfo(name = "app_version")
+    @SerializedName(value = "app_version")
+    private String appVersion;
+
     @ColumnInfo(name = "sdk_version")
     @SerializedName(value = "sdk_version")
     private int sdkVersion;
@@ -75,9 +79,10 @@ public final class ErrorLog {
     @ColumnInfo(name = "is_correct_date")
     private boolean isCorrectDate;
 
-    public ErrorLog(@NonNull String androidId,
+    public ErrorLog(@NonNull String regDate,
+                    @NonNull String androidId,
                     String packageName,
-                    @NonNull String regDate,
+                    String appVersion,
                     int sdkVersion,
                     String phoneBrand,
                     String phoneModel,
@@ -90,9 +95,10 @@ public final class ErrorLog {
                     String name,
                     String email,
                     boolean isCorrectDate) {
+        this.regDate = regDate;
         this.androidId = androidId;
         this.packageName = packageName;
-        this.regDate = regDate;
+        this.appVersion = appVersion;
         this.sdkVersion = sdkVersion;
         this.phoneBrand = phoneBrand;
         this.phoneModel = phoneModel;
@@ -108,9 +114,10 @@ public final class ErrorLog {
     }
 
     public ErrorLog(ReportInfo reportInfo) {
+        this.regDate = TimestampConverter.fromTimestamp(correctDate());
         this.androidId = reportInfo.getAndroidId();
         this.packageName = reportInfo.getPackageName();
-        this.regDate = TimestampConverter.fromTimestamp(correctDate());
+        this.appVersion = Reporter.getAppVersion();
         this.sdkVersion = reportInfo.getSdkVersion();
         this.phoneBrand = reportInfo.getPhoneBrand();
         this.phoneModel = reportInfo.getPhoneModel();
@@ -123,7 +130,6 @@ public final class ErrorLog {
         this.company = userInfo.getCompany();
         this.name = userInfo.getUserName();
         this.email = userInfo.getEmail();
-        this.isCorrectDate = Reporter.hasDiffTime();
     }
 
     public String getAndroidId() {
@@ -136,6 +142,10 @@ public final class ErrorLog {
 
     public String getRegDate() {
         return regDate;
+    }
+
+    public String getAppVersion() {
+        return appVersion;
     }
 
     public int getSdkVersion() {
@@ -187,18 +197,18 @@ public final class ErrorLog {
     }
 
     public void addDiffTimeWithServer() {
-        if(Reporter.hasDiffTime()) {
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(TimestampConverter.toTimestamp(regDate));
-            cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
-            isCorrectDate = true;
-        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(TimestampConverter.toTimestamp(regDate));
+        cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+        regDate = TimestampConverter.fromTimestamp(cal.getTime());
+        isCorrectDate = true;
     }
 
     private Date correctDate() {
         Calendar cal = Calendar.getInstance();
         if(Reporter.hasDiffTime()) {
             cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
+            isCorrectDate = true;
         }
         return cal.getTime();
     }
@@ -209,6 +219,7 @@ public final class ErrorLog {
                 "regDate=" + regDate +
                 ", androidId='" + androidId + '\'' +
                 ", packageName='" + packageName + '\'' +
+                ", appVersion='" + appVersion + '\'' +
                 ", sdkVersion=" + sdkVersion +
                 ", phoneBrand='" + phoneBrand + '\'' +
                 ", phoneModel='" + phoneModel + '\'' +

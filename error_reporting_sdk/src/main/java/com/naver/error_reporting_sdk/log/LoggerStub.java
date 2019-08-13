@@ -2,7 +2,7 @@ package com.naver.error_reporting_sdk.log;
 
 import android.util.Log;
 
-class LoggerStub implements Logger {
+final class LoggerStub implements Logger {
     @Override
     public int v(String tag, String msg) {
         return Log.v(tag, msg);
