@@ -7,14 +7,10 @@ import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
-import androidx.room.Room;
 
 import com.naver.error_reporting_sdk.ReportInfo;
+import com.naver.error_reporting_sdk.Reporter;
 import com.naver.error_reporting_sdk.db.ErrorLog;
-import com.naver.error_reporting_sdk.db.ErrorLogDao;
-import com.naver.error_reporting_sdk.db.LogDatabase;
-
-import java.util.List;
 
 public final class SenderService extends Service {
     static final String LOG_TAG = SenderService.class.getSimpleName();
@@ -33,16 +29,11 @@ public final class SenderService extends Service {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    LogDatabase db = Room.databaseBuilder(
-                            reportInfo.getContext(), LogDatabase.class, LogDatabase.DB_NAME)
-                            .build();
-                    ErrorLogDao dao = db.errorLogDao();
+                    Sender sender = Reporter.hasDiffTime() ?
+                            new HttpSender(SenderService.this) :
+                            new DBSender(SenderService.this);
 
-                    List<ErrorLog> localLogs = dao.selectAllErrorLogs();
-                    dao.deleteLogs();
-                    db.close();
-
-                    new HttpSender(reportInfo.getContext(), localLogs).send(reportInfo);
+                    sender.send(new ErrorLog(reportInfo));
 
                     stopSelf();
                 }

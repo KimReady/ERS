@@ -9,7 +9,10 @@ import java.util.List;
 @Dao
 public interface ErrorLogDao {
     @Insert
-    void insertErrorLogs(List<ErrorLog> errorLogs);
+    void insertErrorLog(ErrorLog errorLog);
+
+    @Insert
+    void insertErrorLogs(List<ErrorLog> errorLog);
 
     @Query("select * from error_log")
     List<ErrorLog> selectAllErrorLogs();

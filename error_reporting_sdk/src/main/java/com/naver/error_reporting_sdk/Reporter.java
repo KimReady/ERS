@@ -22,6 +22,7 @@ import com.naver.httpclientlib.Response;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class Reporter {
@@ -35,7 +36,7 @@ public final class Reporter {
     @NonNull
     public static Logger log = LoggerFactory.createStub();
 
-    public static void register(Application application) {
+    public static synchronized void register(Application application) {
         Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         if (defaultHandler instanceof ErrorHandler) {
             log.w(LOG_TAG, "Reporter has been registered already.");
@@ -48,6 +49,9 @@ public final class Reporter {
 
         log = LoggerFactory.create(context);
         setDifferentTimeFromServer(context);
+
+        Intent intent = new Intent(context, RetrieveLocalService.class);
+        context.startService(intent);
     }
 
     public static void reportError(ReportInfo reportInfo) {
@@ -63,10 +67,6 @@ public final class Reporter {
         }
     }
 
-    public static void crash() {
-        throw new AssertionError("Test Crash");
-    }
-
     public static int getDiffTimeWithServer() {
         return diffTimeWithServer;
     }
@@ -75,21 +75,26 @@ public final class Reporter {
         return hasDiffTime.get();
     }
 
-    public static void setUserInfo(UserInfo.Builder userInfoBuilder) {
-        userInfo = userInfoBuilder.build();
+    public static void setUserInfo(UserInfo userInfo) {
+        Reporter.userInfo = userInfo;
     }
 
     public static UserInfo getUserInfo() {
         return userInfo;
     }
 
-    public static void setDifferentTimeFromServer(Context context) {
+    public static synchronized void setDifferentTimeFromServer(Context context) {
+        if(hasDiffTime()) {
+            return;
+        }
+
         HttpClient httpClient = new HttpClient.Builder()
                 .baseUrl(context.getResources().getString(R.string.server_url))
+                .callTimeout(500, TimeUnit.MILLISECONDS)
                 .build();
         HttpService httpService = httpClient.create(HttpService.class);
 
-        final CallTask<ServerTime> call = httpService.getServerTimeWithDynamicURL();
+        final CallTask<ServerTime> call = httpService.getServerTime();
         call.enqueue(new CallBack<ServerTime>() {
             @Override
             public void onResponse(Response<ServerTime> response) throws IOException {
@@ -99,6 +104,8 @@ public final class Reporter {
                     Date nowDate = new Date();
                     diffTimeWithServer = (int) (serverDate.getTime() - nowDate.getTime()) / 1000;
                     hasDiffTime.set(true);
+                } else {
+                    onFailure(new IOException());
                 }
             }
 
