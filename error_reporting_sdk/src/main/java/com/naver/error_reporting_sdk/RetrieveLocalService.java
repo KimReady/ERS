@@ -26,22 +26,14 @@ public class RetrieveLocalService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        if(executor != null && !executor.isTerminated()) {
+        if(executor != null && !executor.isShutdown()) {
             return START_REDELIVER_INTENT;
         }
-
-        if (executor == null) {
-            executor = Executors.newScheduledThreadPool(1);
-        }
+        executor = Executors.newScheduledThreadPool(1);
         Log.d(LOG_TAG, "start to retrieve Error logs in DB.");
 
-        DBTask task = new DBTask(this);
-
-        if (!Reporter.hasDiffTime()) {
-            Reporter.setDifferentTimeFromServer(this);
-        }
-
-        executor.scheduleAtFixedRate(task, 5, 30, TimeUnit.SECONDS);
+        DBTask dbTask = new DBTask(this);
+        executor.scheduleAtFixedRate(dbTask, 5, 30, TimeUnit.SECONDS);
 
         return START_REDELIVER_INTENT;
     }
@@ -61,12 +53,17 @@ public class RetrieveLocalService extends Service {
 
         @Override
         public void run() {
+            if(!Reporter.hasDiffTime()) {
+                Reporter.setDifferentTimeFromServer(context);
+            }
+
             LogDatabase db = Room.databaseBuilder(context, LogDatabase.class, LogDatabase.DB_NAME).build();
             ErrorLogDao dao = db.errorLogDao();
 
             List<ErrorLog> errorLogs = dao.selectAllErrorLogs();
+            // TODO : 배포할 때는 삭제
             for (ErrorLog log : errorLogs) {
-                Log.d(LOG_TAG, "try to load and send local data : " + log.toString());
+                Log.d(LOG_TAG, "try to retrieve and send the local data : " + log.toString());
             }
             dao.deleteLogs();
             db.close();
@@ -74,6 +71,7 @@ public class RetrieveLocalService extends Service {
             if (errorLogs.isEmpty()) {
                 Log.d(LOG_TAG, "Retrieve Service shut down.");
                 executor.shutdownNow();
+                stopSelf();
                 return;
             }
 
