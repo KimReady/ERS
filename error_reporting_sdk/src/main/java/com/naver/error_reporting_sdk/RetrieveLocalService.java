@@ -27,13 +27,14 @@ public class RetrieveLocalService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         if(executor != null && !executor.isShutdown()) {
+            Log.d(LOG_TAG, "RetrieveLocalService has already been running.");
             return START_REDELIVER_INTENT;
         }
         executor = Executors.newScheduledThreadPool(1);
         Log.d(LOG_TAG, "start to retrieve Error logs in DB.");
 
         DBTask dbTask = new DBTask(this);
-        executor.scheduleAtFixedRate(dbTask, 5, 30, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(dbTask, 1, 30, TimeUnit.SECONDS);
 
         return START_REDELIVER_INTENT;
     }

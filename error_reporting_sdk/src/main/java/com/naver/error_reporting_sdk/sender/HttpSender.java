@@ -58,7 +58,6 @@ public class HttpSender implements Sender {
 
             for (ErrorLog errorLog : errorLogs) {
                 if (!errorLog.isCorrectDate()) {
-                    Log.d("RetrieveLocalService", "add Diff Time with server. : " + Reporter.getDiffTimeWithServer());
                     errorLog.addDiffTimeWithServer();
                 }
             }

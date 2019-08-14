@@ -11,7 +11,6 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import com.naver.error_reporting_sdk.db.ServerTime;
-import com.naver.error_reporting_sdk.db.TimestampConverter;
 import com.naver.error_reporting_sdk.log.Logger;
 import com.naver.error_reporting_sdk.log.LoggerFactory;
 import com.naver.error_reporting_sdk.sender.HttpService;
@@ -114,7 +113,7 @@ public final class Reporter {
             public void onResponse(Response<ServerTime> response) throws IOException {
                 if (response.isSuccessful()) {
                     ServerTime serverTime = response.body();
-                    Date serverDate = TimestampConverter.toTimestamp(serverTime.getCurrentTime());
+                    Date serverDate = Util.toTimestamp(serverTime.getCurrentTime());
                     Date nowDate = new Date();
                     diffTimeWithServer = (int) (serverDate.getTime() - nowDate.getTime()) / 1000;
                     hasDiffTime.set(true);

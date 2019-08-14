@@ -7,6 +7,7 @@ import androidx.room.Entity;
 import com.google.gson.annotations.SerializedName;
 import com.naver.error_reporting_sdk.ReportInfo;
 import com.naver.error_reporting_sdk.Reporter;
+import com.naver.error_reporting_sdk.Util;
 import com.naver.error_reporting_sdk.UserInfo;
 
 import java.util.Calendar;
@@ -114,7 +115,7 @@ public final class ErrorLog {
     }
 
     public ErrorLog(ReportInfo reportInfo) {
-        this.regDate = TimestampConverter.fromTimestamp(correctDate());
+        this.regDate = Util.fromTimestamp(correctDate());
         this.androidId = reportInfo.getAndroidId();
         this.packageName = reportInfo.getPackageName();
         this.appVersion = Reporter.getAppVersion();
@@ -198,9 +199,9 @@ public final class ErrorLog {
 
     public void addDiffTimeWithServer() {
         Calendar cal = Calendar.getInstance();
-        cal.setTime(TimestampConverter.toTimestamp(regDate));
+        cal.setTime(Util.toTimestamp(regDate));
         cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());
-        regDate = TimestampConverter.fromTimestamp(cal.getTime());
+        regDate = Util.fromTimestamp(cal.getTime());
         isCorrectDate = true;
     }
 

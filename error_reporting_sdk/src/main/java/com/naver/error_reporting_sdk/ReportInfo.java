@@ -129,11 +129,11 @@ public final class ReportInfo {
             this.context = context;
             this.androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
             this.packageName = context.getPackageName();
-            this.logLevel = LogLevel.ERROR.getName();
+            this.logLevel = LogLevel.ERROR.name();
         }
 
-        public Builder logLevel(LogLevel logLevel) {
-            this.logLevel = logLevel.getName();
+        public Builder logLevel(String logLevel) {
+            this.logLevel = logLevel;
             return this;
         }
 
