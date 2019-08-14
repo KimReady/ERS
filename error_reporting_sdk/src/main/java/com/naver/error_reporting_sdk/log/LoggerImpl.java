@@ -99,7 +99,8 @@ final class LoggerImpl implements Logger {
         String stackTrace = Util.parseString(tr);
         ReportInfo reportInfo = new ReportInfo.Builder(context)
                 .logLevel(level.name())
-                .message(tag+": "+msg)
+                .tag(tag)
+                .message(msg)
                 .stackTrace(stackTrace)
                 .build();
         Reporter.reportError(reportInfo);

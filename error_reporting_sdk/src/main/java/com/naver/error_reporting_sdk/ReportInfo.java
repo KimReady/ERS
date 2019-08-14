@@ -16,6 +16,7 @@ public final class ReportInfo {
     private String androidId;
     private String packageName;
     private String logLevel;
+    private String tag;
     private String message;
     private String stackTrace;
     private long availableMemory;
@@ -27,6 +28,7 @@ public final class ReportInfo {
         this.androidId = builder.androidId;
         this.packageName = builder.packageName;
         this.logLevel = builder.logLevel;
+        this.tag = builder.tag;
         this.message = builder.message;
         this.stackTrace = builder.stackTrace;
         this.context = builder.context;
@@ -38,6 +40,7 @@ public final class ReportInfo {
         this.androidId = bundle.getString("android_id");
         this.packageName = bundle.getString("package_name");
         this.logLevel = bundle.getString("log_level");
+        this.tag = bundle.getString("tag");
         this.message = bundle.getString("message");
         this.stackTrace = bundle.getString("stacktrace");
         this.availableMemory = bundle.getLong("available_memory");
@@ -72,6 +75,10 @@ public final class ReportInfo {
         return logLevel;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -93,6 +100,7 @@ public final class ReportInfo {
         bundle.putString("android_id", androidId);
         bundle.putString("package_name", packageName);
         bundle.putString("log_level", logLevel);
+        bundle.putString("tag", tag);
         bundle.putString("message", message);
         bundle.putString("stacktrace", stackTrace);
         bundle.putLong("available_memory", availableMemory);
@@ -109,6 +117,7 @@ public final class ReportInfo {
                 ", androidId='" + androidId + '\'' +
                 ", packageName='" + packageName + '\'' +
                 ", logLevel='" + logLevel + '\'' +
+                ", tag='" + tag + '\'' +
                 ", message='" + message + '\'' +
                 ", StackTrace='" + stackTrace + '\'' +
                 ", context=" + context +
@@ -121,6 +130,7 @@ public final class ReportInfo {
         private final String androidId;
         private final String packageName;
         private String logLevel;
+        private String tag;
         private String message;
         private Context context;
         private String stackTrace;
@@ -130,10 +140,18 @@ public final class ReportInfo {
             this.androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
             this.packageName = context.getPackageName();
             this.logLevel = LogLevel.ERROR.name();
+            this.tag = "";
+            this.message = "";
+            this.stackTrace = "";
         }
 
         public Builder logLevel(String logLevel) {
             this.logLevel = logLevel;
+            return this;
+        }
+
+        public Builder tag(String tag) {
+            this.tag = tag;
             return this;
         }
 
