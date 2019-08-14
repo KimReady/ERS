@@ -1,89 +1,95 @@
-package com.naver.error_reporting_sdk.log;
+package com.naver.error_reporting_sdk;
 
-import android.content.Context;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.naver.error_reporting_sdk.ReportInfo;
-import com.naver.error_reporting_sdk.Reporter;
-import com.naver.error_reporting_sdk.Util;
+class LoggerImpl implements Logger {
 
-final class LoggerImpl implements Logger {
-    private final Context context;
-
-    LoggerImpl(Context context) {
-        this.context = context;
+    static Logger create() {
+        return new LoggerImpl();
     }
+
+    private LoggerImpl() { }
 
     @Override
     public int v(String tag, String msg) {
-        writeLog(LogLevel.VERBOSE, tag, msg, null);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.VERBOSE, tag, msg, null);
+        }
         return Log.v(tag, msg);
     }
 
     @Override
     public int v(String tag, String msg, Throwable tr) {
-        writeLog(LogLevel.VERBOSE, tag, msg, tr);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.VERBOSE, tag, msg, tr);
+        }
         return Log.v(tag, msg, tr);
     }
 
     @Override
     public int d(String tag, String msg) {
-        writeLog(LogLevel.DEBUG, tag, msg, null);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.DEBUG, tag, msg, null);
+        }
         return Log.d(tag, msg);
     }
 
     @Override
     public int d(String tag, String msg, Throwable tr) {
-        writeLog(LogLevel.DEBUG, tag, msg, tr);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.DEBUG, tag, msg, tr);
+        }
         return Log.d(tag, msg, tr);
     }
 
     @Override
     public int i(String tag, String msg) {
-        writeLog(LogLevel.INFO, tag, msg, null);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.INFO, tag, msg, null);
+        }
         return Log.i(tag, msg);
     }
 
     @Override
     public int i(String tag, String msg, Throwable tr) {
-        writeLog(LogLevel.INFO, tag, msg, tr);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.INFO, tag, msg, tr);
+        }
         return Log.i(tag, msg, tr);
     }
 
     @Override
     public int w(String tag, String msg) {
-        writeLog(LogLevel.WARNING, tag, msg, null);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.WARNING, tag, msg, null);
+        }
         return Log.w(tag, msg);
     }
 
     @Override
     public int w(String tag, String msg, Throwable tr) {
-        writeLog(LogLevel.WARNING, tag, msg, tr);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.WARNING, tag, msg, tr);
+        }
         return Log.w(tag, msg, tr);
     }
 
     @Override
     public int e(String tag, String msg) {
-        writeLog(LogLevel.ERROR, tag, msg, null);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.ERROR, tag, msg, null);
+        }
         return Log.e(tag, msg);
     }
 
     @Override
     public int e(String tag, String msg, Throwable tr) {
-        writeLog(LogLevel.ERROR, tag, msg, tr);
-
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.ERROR, tag, msg, tr);
+        }
         return Log.e(tag, msg, tr);
     }
 
@@ -97,7 +103,7 @@ final class LoggerImpl implements Logger {
                           @NonNull String msg,
                           @Nullable Throwable tr) {
         String stackTrace = Util.parseString(tr);
-        ReportInfo reportInfo = new ReportInfo.Builder(context)
+        ReportInfo reportInfo = new ReportInfo.Builder(Reporter.getContext())
                 .logLevel(level.name())
                 .tag(tag)
                 .message(msg)

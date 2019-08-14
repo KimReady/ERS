@@ -1,7 +1,5 @@
-package com.naver.error_reporting_sdk.sender;
+package com.naver.error_reporting_sdk;
 
-import com.naver.error_reporting_sdk.db.ErrorLog;
-import com.naver.error_reporting_sdk.db.ServerTime;
 import com.naver.httpclientlib.CallTask;
 import com.naver.httpclientlib.RequestMethod;
 import com.naver.httpclientlib.annotation.RequestBody;
@@ -9,7 +7,7 @@ import com.naver.httpclientlib.annotation.RequestMapping;
 
 import java.util.List;
 
-public interface HttpService {
+interface HttpService {
     @RequestMapping(value = "/ers/time", method=RequestMethod.GET)
     CallTask<ServerTime> getServerTime();
 

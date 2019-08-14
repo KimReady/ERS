@@ -1,4 +1,4 @@
-package com.naver.error_reporting_sdk.sender;
+package com.naver.error_reporting_sdk;
 
 import android.app.Service;
 import android.content.Intent;
@@ -8,12 +8,8 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.naver.error_reporting_sdk.ReportInfo;
-import com.naver.error_reporting_sdk.Reporter;
-import com.naver.error_reporting_sdk.db.ErrorLog;
-
 public final class SenderService extends Service {
-    static final String LOG_TAG = SenderService.class.getSimpleName();
+    private static final String LOG_TAG = SenderService.class.getSimpleName();
 
     private ReportInfo reportInfo;
 

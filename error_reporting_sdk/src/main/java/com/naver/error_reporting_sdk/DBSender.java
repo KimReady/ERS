@@ -1,4 +1,4 @@
-package com.naver.error_reporting_sdk.sender;
+package com.naver.error_reporting_sdk;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,15 +6,10 @@ import android.util.Log;
 
 import androidx.room.Room;
 
-import com.naver.error_reporting_sdk.RetrieveLocalService;
-import com.naver.error_reporting_sdk.db.ErrorLog;
-import com.naver.error_reporting_sdk.db.ErrorLogDao;
-import com.naver.error_reporting_sdk.db.LogDatabase;
-
 import java.util.List;
 
 class DBSender implements Sender {
-    static final String LOG_TAG = DBSender.class.getSimpleName();
+    private static final String LOG_TAG = DBSender.class.getSimpleName();
     private final Context context;
     private final LogDatabase db;
     private final ErrorLogDao dao;

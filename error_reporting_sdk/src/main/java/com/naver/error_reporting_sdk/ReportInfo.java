@@ -7,8 +7,6 @@ import android.os.Environment;
 import android.os.StatFs;
 import android.provider.Settings.Secure;
 
-import com.naver.error_reporting_sdk.log.LogLevel;
-
 public final class ReportInfo {
     private static final int SDK_VERSION = Build.VERSION.SDK_INT;
     private static final String PHONE_BRAND = Build.BRAND;
@@ -36,7 +34,7 @@ public final class ReportInfo {
         this.totalMemory = builder.getTotalInternalMemorySize();
     }
 
-    public ReportInfo(Bundle bundle) {
+    ReportInfo(Bundle bundle) {
         this.androidId = bundle.getString("android_id");
         this.packageName = bundle.getString("package_name");
         this.logLevel = bundle.getString("log_level");
@@ -47,55 +45,55 @@ public final class ReportInfo {
         this.totalMemory = bundle.getLong("total_memory");
     }
 
-    public String getAndroidId() {
+    String getAndroidId() {
         return androidId;
     }
 
-    public int getSdkVersion() {
+    int getSdkVersion() {
         return SDK_VERSION;
     }
 
-    public String getPhoneBrand() {
+    String getPhoneBrand() {
         return PHONE_BRAND;
     }
 
-    public String getPhoneModel() {
+    String getPhoneModel() {
         return PHONE_MODEL;
     }
 
-    public String getPackageName() {
+    String getPackageName() {
         return packageName;
     }
 
-    public String getStackTrace() {
+    String getStackTrace() {
         return stackTrace;
     }
 
-    public String getLogLevel() {
+    String getLogLevel() {
         return logLevel;
     }
 
-    public String getTag() {
+    String getTag() {
         return tag;
     }
 
-    public String getMessage() {
+    String getMessage() {
         return message;
     }
 
-    public Context getContext() {
+    Context getContext() {
         return context;
     }
 
-    public long getAvailableMemory() {
+    long getAvailableMemory() {
         return availableMemory;
     }
 
-    public long getTotalMemory() {
+    long getTotalMemory() {
         return totalMemory;
     }
 
-    public Bundle makeBundle() {
+    Bundle makeBundle() {
         Bundle bundle = new Bundle();
         bundle.putString("android_id", androidId);
         bundle.putString("package_name", packageName);
@@ -126,7 +124,7 @@ public final class ReportInfo {
                 '}';
     }
 
-    public static final class Builder {
+    static final class Builder {
         private final String androidId;
         private final String packageName;
         private String logLevel;
@@ -135,7 +133,7 @@ public final class ReportInfo {
         private Context context;
         private String stackTrace;
 
-        public Builder(Context context) {
+        Builder(Context context) {
             this.context = context;
             this.androidId = Secure.getString(context.getContentResolver(), Secure.ANDROID_ID);
             this.packageName = context.getPackageName();
@@ -145,22 +143,22 @@ public final class ReportInfo {
             this.stackTrace = "";
         }
 
-        public Builder logLevel(String logLevel) {
+        Builder logLevel(String logLevel) {
             this.logLevel = logLevel;
             return this;
         }
 
-        public Builder tag(String tag) {
+        Builder tag(String tag) {
             this.tag = tag;
             return this;
         }
 
-        public Builder message(String message) {
+        Builder message(String message) {
             this.message = message;
             return this;
         }
 
-        public Builder stackTrace(String stackTrace) {
+        Builder stackTrace(String stackTrace) {
             this.stackTrace = stackTrace;
             return this;
         }
@@ -183,7 +181,7 @@ public final class ReportInfo {
             }
         }
 
-        public ReportInfo build() {
+        ReportInfo build() {
             return new ReportInfo(this);
         }
     }

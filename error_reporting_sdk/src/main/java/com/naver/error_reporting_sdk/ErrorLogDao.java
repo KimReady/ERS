@@ -1,4 +1,4 @@
-package com.naver.error_reporting_sdk.db;
+package com.naver.error_reporting_sdk;
 
 import androidx.room.Dao;
 import androidx.room.Insert;
@@ -7,7 +7,7 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface ErrorLogDao {
+interface ErrorLogDao {
     @Insert
     void insertErrorLog(ErrorLog errorLog);
 

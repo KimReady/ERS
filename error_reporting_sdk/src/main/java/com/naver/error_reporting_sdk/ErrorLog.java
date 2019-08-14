@@ -1,14 +1,10 @@
-package com.naver.error_reporting_sdk.db;
+package com.naver.error_reporting_sdk;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 
 import com.google.gson.annotations.SerializedName;
-import com.naver.error_reporting_sdk.ReportInfo;
-import com.naver.error_reporting_sdk.Reporter;
-import com.naver.error_reporting_sdk.Util;
-import com.naver.error_reporting_sdk.CustomData;
 
 import java.util.Calendar;
 import java.util.Date;

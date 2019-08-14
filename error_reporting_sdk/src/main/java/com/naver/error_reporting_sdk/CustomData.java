@@ -11,7 +11,7 @@ public class CustomData {
         this.data = builder.data;
     }
 
-    public String getData() {
+    String getData() {
         return data;
     }
 

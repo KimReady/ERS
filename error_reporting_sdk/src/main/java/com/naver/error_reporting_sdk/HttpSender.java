@@ -1,23 +1,20 @@
-package com.naver.error_reporting_sdk.sender;
+package com.naver.error_reporting_sdk;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.naver.error_reporting_sdk.R;
-import com.naver.error_reporting_sdk.Reporter;
-import com.naver.error_reporting_sdk.db.ErrorLog;
 import com.naver.httpclientlib.CallTask;
 import com.naver.httpclientlib.HttpClient;
 
 import java.io.IOException;
 import java.util.List;
 
-public class HttpSender implements Sender {
+class HttpSender implements Sender {
     private static final String LOG_TAG = HttpSender.class.getSimpleName();
     private final Context context;
     private final HttpService httpService;
 
-    public HttpSender(Context context) {
+    HttpSender(Context context) {
         this.context = context;
         HttpClient httpClient = new HttpClient.Builder()
                 .baseUrl(context.getResources().getString(R.string.server_url))

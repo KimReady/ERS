@@ -6,7 +6,7 @@ import android.util.Log;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 class ErrorHandler implements Thread.UncaughtExceptionHandler {
-    static final String LOG_TAG = ErrorHandler.class.getSimpleName();
+    private static final String LOG_TAG = ErrorHandler.class.getSimpleName();
 
     private Thread.UncaughtExceptionHandler defaultHandler;
     private AtomicBoolean handled;

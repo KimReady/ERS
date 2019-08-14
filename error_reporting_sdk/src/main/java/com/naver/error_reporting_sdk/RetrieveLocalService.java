@@ -9,17 +9,12 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.room.Room;
 
-import com.naver.error_reporting_sdk.db.ErrorLog;
-import com.naver.error_reporting_sdk.db.ErrorLogDao;
-import com.naver.error_reporting_sdk.db.LogDatabase;
-import com.naver.error_reporting_sdk.sender.HttpSender;
-
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public class RetrieveLocalService extends Service {
+public final class RetrieveLocalService extends Service {
     private static final String LOG_TAG = RetrieveLocalService.class.getSimpleName();
 
     private ScheduledExecutorService executor;

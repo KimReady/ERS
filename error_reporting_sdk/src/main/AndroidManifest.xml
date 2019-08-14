@@ -2,7 +2,7 @@
     package="com.naver.error_reporting_sdk">
     <application>
         <service
-            android:name=".sender.SenderService"
+            android:name=".SenderService"
             android:exported="false"
             android:process=":ers" />
         <service

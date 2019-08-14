@@ -9,12 +9,12 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class Util {
-    static final String LOG_TAG = Util.class.getSimpleName();
+class Util {
+    private static final String LOG_TAG = Util.class.getSimpleName();
 
     private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
 
-    public static Date toTimestamp(String value) {
+    static Date toTimestamp(String value) {
         if(value != null) {
             try {
                 return dateFormat.parse(value);
@@ -25,11 +25,11 @@ public class Util {
         return null;
     }
 
-    public static String fromTimestamp(Date value) {
+    static String fromTimestamp(Date value) {
         return value != null ? dateFormat.format(value) : null;
     }
 
-    public static String parseString(Throwable tr) {
+    static String parseString(Throwable tr) {
         if(tr == null) {
             return "";
         }

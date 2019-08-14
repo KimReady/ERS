@@ -10,11 +10,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.naver.error_reporting_sdk.db.ServerTime;
-import com.naver.error_reporting_sdk.log.Logger;
-import com.naver.error_reporting_sdk.log.LoggerFactory;
-import com.naver.error_reporting_sdk.sender.HttpService;
-import com.naver.error_reporting_sdk.sender.SenderService;
 import com.naver.httpclientlib.CallBack;
 import com.naver.httpclientlib.CallTask;
 import com.naver.httpclientlib.HttpClient;
@@ -30,21 +25,24 @@ public final class Reporter {
 
     private static int diffTimeWithServer;
     private static AtomicBoolean hasDiffTime = new AtomicBoolean(false);
+    private static AtomicBoolean isRegister = new AtomicBoolean(false);
 
     private static String appVersion;
     private static CustomData customData;
+    private static Context context;
 
     @NonNull
-    public static Logger log = LoggerFactory.createStub();
+    public static final Logger log = LoggerImpl.create();
 
     public static synchronized void register(Application application) {
         Thread.UncaughtExceptionHandler defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
-        if (defaultHandler instanceof ErrorHandler) {
-            log.w(LOG_TAG, "Reporter has been registered already.");
+        if (defaultHandler instanceof ErrorHandler || isRegister.get()) {
+            Log.d(LOG_TAG, "Reporter has been registered already.");
             return;
         }
+        isRegister.set(true);
 
-        Context context = application.getApplicationContext();
+        context = application.getApplicationContext();
 
         Thread.setDefaultUncaughtExceptionHandler(new ErrorHandler(defaultHandler, context));
 
@@ -56,14 +54,13 @@ public final class Reporter {
             Log.e(LOG_TAG, "Failed to get Version Info : " + e.getMessage());
         }
 
-        log = LoggerFactory.create(context);
         setDifferentTimeFromServer(context);
 
         Intent intent = new Intent(context, RetrieveLocalService.class);
         context.startService(intent);
     }
 
-    public static void reportError(ReportInfo reportInfo) {
+    static void reportError(ReportInfo reportInfo) {
         Context context = reportInfo.getContext();
 
         Intent intent = new Intent(context, SenderService.class);
@@ -76,11 +73,11 @@ public final class Reporter {
         }
     }
 
-    public static int getDiffTimeWithServer() {
+    static int getDiffTimeWithServer() {
         return diffTimeWithServer;
     }
 
-    public static boolean hasDiffTime() {
+    static boolean hasDiffTime() {
         return hasDiffTime.get();
     }
 
@@ -88,15 +85,19 @@ public final class Reporter {
         Reporter.customData = customData;
     }
 
-    public static CustomData getCustomData() {
+    static CustomData getCustomData() {
         return customData;
     }
 
-    public static String getAppVersion() {
+    static String getAppVersion() {
         return appVersion;
     }
 
-    public static synchronized void setDifferentTimeFromServer(Context context) {
+    static Context getContext() {
+        return context;
+    }
+
+    static synchronized void setDifferentTimeFromServer(Context context) {
         if(hasDiffTime()) {
             return;
         }

@@ -1,13 +1,13 @@
-package com.naver.error_reporting_sdk.db;
+package com.naver.error_reporting_sdk;
 
-public class ServerTime {
+class ServerTime {
     private String currentTime;
 
-    public ServerTime(String currentTime) {
+    ServerTime(String currentTime) {
         this.currentTime = currentTime;
     }
 
-    public String getCurrentTime() {
+    String getCurrentTime() {
         return currentTime;
     }
 
