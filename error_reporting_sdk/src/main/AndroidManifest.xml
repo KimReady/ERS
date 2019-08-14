@@ -3,9 +3,11 @@
     <application>
         <service
             android:name=".sender.SenderService"
-            android:exported="false"/>
+            android:exported="false"
+            android:process=":ers" />
         <service
             android:name=".RetrieveLocalService"
-            android:exported="false"/>
+            android:exported="false"
+            android:process=":ers" />
     </application>
 </manifest>
