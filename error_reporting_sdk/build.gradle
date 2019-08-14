@@ -31,7 +31,7 @@ dependencies {
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    implementation 'com.naver.httpclientlib:HttpClientLib:0.2.5'
+    implementation 'com.naver.httpclientlib:HttpClientLib:0.3.0'
 
     testImplementation 'junit:junit:4.12'
 }

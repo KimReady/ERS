@@ -10,7 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Entity(tableName = "error_log", primaryKeys = {"android_id", "reg_date"})
-public final class ErrorLog {
+class ErrorLog {
     @NonNull
     @ColumnInfo(name = "reg_date")
     @SerializedName(value = "reg_date")
@@ -72,7 +72,7 @@ public final class ErrorLog {
     @ColumnInfo(name = "is_correct_date")
     private boolean isCorrectDate;
 
-    public ErrorLog(@NonNull String regDate,
+    ErrorLog(@NonNull String regDate,
                     @NonNull String androidId,
                     String packageName,
                     String appVersion,
@@ -122,67 +122,67 @@ public final class ErrorLog {
         this.customData = cd != null ? cd.getData() : "";
     }
 
-    public String getAndroidId() {
+    String getAndroidId() {
         return androidId;
     }
 
-    public String getPackageName() {
+    String getPackageName() {
         return packageName;
     }
 
-    public String getRegDate() {
+    String getRegDate() {
         return regDate;
     }
 
-    public String getAppVersion() {
+    String getAppVersion() {
         return appVersion;
     }
 
-    public int getSdkVersion() {
+    int getSdkVersion() {
         return sdkVersion;
     }
 
-    public String getPhoneBrand() {
+    String getPhoneBrand() {
         return phoneBrand;
     }
 
-    public String getPhoneModel() {
+    String getPhoneModel() {
         return phoneModel;
     }
 
-    public String getLogLevel() {
+    String getLogLevel() {
         return logLevel;
     }
 
-    public String getTag() {
+    String getTag() {
         return tag;
     }
 
-    public String getMessage() {
+    String getMessage() {
         return message;
     }
 
-    public String getStackTrace() {
+    String getStackTrace() {
         return stackTrace;
     }
 
-    public long getAvailableMemory() {
+    long getAvailableMemory() {
         return availableMemory;
     }
 
-    public long getTotalMemory() {
+    long getTotalMemory() {
         return totalMemory;
     }
 
-    public String getCustomData() {
+    String getCustomData() {
         return customData;
     }
 
-    public boolean isCorrectDate() {
+    boolean isCorrectDate() {
         return isCorrectDate;
     }
 
-    public void addDiffTimeWithServer() {
+    void addDiffTimeWithServer() {
         Calendar cal = Calendar.getInstance();
         cal.setTime(Util.toTimestamp(regDate));
         cal.add(Calendar.SECOND, Reporter.getDiffTimeWithServer());

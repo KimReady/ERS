@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-public final class RetrieveLocalService extends Service {
+class RetrieveLocalService extends Service {
     private static final String LOG_TAG = RetrieveLocalService.class.getSimpleName();
 
     private ScheduledExecutorService executor;

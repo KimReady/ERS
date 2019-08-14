@@ -8,7 +8,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-public final class SenderService extends Service {
+class SenderService extends Service {
     private static final String LOG_TAG = SenderService.class.getSimpleName();
 
     private ReportInfo reportInfo;
