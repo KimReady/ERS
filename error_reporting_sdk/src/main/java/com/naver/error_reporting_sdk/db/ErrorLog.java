@@ -8,7 +8,7 @@ import com.google.gson.annotations.SerializedName;
 import com.naver.error_reporting_sdk.ReportInfo;
 import com.naver.error_reporting_sdk.Reporter;
 import com.naver.error_reporting_sdk.Util;
-import com.naver.error_reporting_sdk.UserInfo;
+import com.naver.error_reporting_sdk.CustomData;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -49,6 +49,10 @@ public final class ErrorLog {
     @SerializedName(value = "log_level")
     private String logLevel;
 
+    @ColumnInfo(name = "tag")
+    @SerializedName(value = "tag")
+    private String tag;
+
     @ColumnInfo(name = "message")
     @SerializedName(value = "message")
     private String message;
@@ -65,17 +69,9 @@ public final class ErrorLog {
     @SerializedName(value = "total_memory")
     private long totalMemory;
 
-    @ColumnInfo(name = "company")
-    @SerializedName(value = "company")
-    private String company;
-
-    @ColumnInfo(name = "name")
-    @SerializedName(value = "name")
-    private String name;
-
-    @ColumnInfo(name = "email")
-    @SerializedName(value = "email")
-    private String email;
+    @ColumnInfo(name = "custom_data")
+    @SerializedName(value = "custom_data")
+    private String customData;
 
     @ColumnInfo(name = "is_correct_date")
     private boolean isCorrectDate;
@@ -88,13 +84,12 @@ public final class ErrorLog {
                     String phoneBrand,
                     String phoneModel,
                     String logLevel,
+                    String tag,
                     String message,
                     String stackTrace,
                     long availableMemory,
                     long totalMemory,
-                    String company,
-                    String name,
-                    String email,
+                    String customData,
                     boolean isCorrectDate) {
         this.regDate = regDate;
         this.androidId = androidId;
@@ -104,13 +99,12 @@ public final class ErrorLog {
         this.phoneBrand = phoneBrand;
         this.phoneModel = phoneModel;
         this.logLevel = logLevel;
+        this.tag = tag;
         this.message = message;
         this.stackTrace = stackTrace;
         this.availableMemory = availableMemory;
         this.totalMemory = totalMemory;
-        this.company = company;
-        this.name = name;
-        this.email = email;
+        this.customData = customData;
         this.isCorrectDate = isCorrectDate;
     }
 
@@ -123,14 +117,13 @@ public final class ErrorLog {
         this.phoneBrand = reportInfo.getPhoneBrand();
         this.phoneModel = reportInfo.getPhoneModel();
         this.logLevel = reportInfo.getLogLevel();
+        this.tag = reportInfo.getTag();
         this.message = reportInfo.getMessage();
         this.stackTrace = reportInfo.getStackTrace();
         this.availableMemory = reportInfo.getAvailableMemory();
         this.totalMemory = reportInfo.getTotalMemory();
-        UserInfo userInfo = Reporter.getUserInfo();
-        this.company = userInfo.getCompany();
-        this.name = userInfo.getUserName();
-        this.email = userInfo.getEmail();
+        CustomData cd = Reporter.getCustomData();
+        this.customData = cd != null ? cd.getData() : "";
     }
 
     public String getAndroidId() {
@@ -165,6 +158,10 @@ public final class ErrorLog {
         return logLevel;
     }
 
+    public String getTag() {
+        return tag;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -181,16 +178,8 @@ public final class ErrorLog {
         return totalMemory;
     }
 
-    public String getCompany() {
-        return company;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
+    public String getCustomData() {
+        return customData;
     }
 
     public boolean isCorrectDate() {
@@ -225,13 +214,12 @@ public final class ErrorLog {
                 ", phoneBrand='" + phoneBrand + '\'' +
                 ", phoneModel='" + phoneModel + '\'' +
                 ", logLevel='" + logLevel + '\'' +
+                ", tag='" + tag + '\'' +
                 ", message='" + message + '\'' +
                 ", stackTrace='" + stackTrace + '\'' +
                 ", availableMemory=" + availableMemory +
                 ", totalMemory=" + totalMemory +
-                ", company=" + company +
-                ", name=" + name +
-                ", email=" + email +
+                ", customData=" + customData +
                 ", isCorrectDate=" + isCorrectDate +
                 '}';
     }

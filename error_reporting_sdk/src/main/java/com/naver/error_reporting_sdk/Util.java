@@ -30,12 +30,14 @@ public class Util {
     }
 
     public static String parseString(Throwable tr) {
+        if(tr == null) {
+            return "";
+        }
+
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
-        if(tr != null) {
-            tr.printStackTrace(pw);
-        }
-        String stackTrace = tr != null ? sw.toString() : "";
+        tr.printStackTrace(pw);
+        String stackTrace = sw.toString();
         try {
             sw.close();
             pw.close();

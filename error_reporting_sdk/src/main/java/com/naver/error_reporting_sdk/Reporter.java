@@ -32,7 +32,7 @@ public final class Reporter {
     private static AtomicBoolean hasDiffTime = new AtomicBoolean(false);
 
     private static String appVersion;
-    private static UserInfo userInfo;
+    private static CustomData customData;
 
     @NonNull
     public static Logger log = LoggerFactory.createStub();
@@ -84,12 +84,12 @@ public final class Reporter {
         return hasDiffTime.get();
     }
 
-    public static void setUserInfo(UserInfo userInfo) {
-        Reporter.userInfo = userInfo;
+    public static void setCustomData(CustomData customData) {
+        Reporter.customData = customData;
     }
 
-    public static UserInfo getUserInfo() {
-        return userInfo;
+    public static CustomData getCustomData() {
+        return customData;
     }
 
     public static String getAppVersion() {
