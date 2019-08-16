@@ -1,8 +1,8 @@
 package com.naver.error_reporting_sdk;
 
+import android.os.Bundle;
+
 import java.util.Iterator;
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 public class CustomData {
     private final String data;
@@ -16,32 +16,42 @@ public class CustomData {
     }
 
     public static final class Builder {
-        private Map<String, String> dataMap;
+        private Bundle bundle;
         private String data;
 
         public Builder() {
-            dataMap = new LinkedHashMap<>();
+            bundle = new Bundle();
         }
 
-        public Builder putData(String key, String value) {
-            dataMap.put(key, value);
+        public Builder putData(Bundle bundle) {
+            this.bundle.putAll(bundle);
             return this;
         }
 
-        public Builder putData(Map<String, String> map) {
-            this.dataMap.putAll(map);
+        public Builder putData(String key, String value) {
+            bundle.putString(key, value);
+            return this;
+        }
+
+        public Builder putData(String key, int value) {
+            bundle.putInt(key, value);
+            return this;
+        }
+
+        public Builder putData(String key, float value) {
+            bundle.putFloat(key, value);
             return this;
         }
 
         public CustomData build() {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append("{\n");
-            Iterator<String> iterator = dataMap.keySet().iterator();
+            Iterator<String> iterator = bundle.keySet().iterator();
             while(iterator.hasNext()) {
                 String key = iterator.next();
                 stringBuilder.append(key);
                 stringBuilder.append(":");
-                stringBuilder.append(dataMap.get(key));
+                stringBuilder.append(bundle.get(key));
                 stringBuilder.append(",\n");
             }
             stringBuilder.append("}");
