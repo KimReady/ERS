@@ -12,11 +12,12 @@ import java.util.Locale;
 class Util {
     private static final String LOG_TAG = Util.class.getSimpleName();
 
-    private static final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+    private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     static Date toTimestamp(String value) {
         if(value != null) {
             try {
+                DateFormat dateFormat = new SimpleDateFormat(DATE_FORMAT, Locale.KOREA);
                 return dateFormat.parse(value);
             } catch(ParseException e) {
                 Reporter.log.e(LOG_TAG, e.getMessage());
@@ -26,7 +27,9 @@ class Util {
     }
 
     static String fromTimestamp(Date value) {
-        return value != null ? dateFormat.format(value) : null;
+        return value != null ?
+                new SimpleDateFormat(DATE_FORMAT, Locale.KOREA).format(value)
+                : null;
     }
 
     static String parseString(Throwable tr) {

@@ -57,9 +57,8 @@ class RetrieveLocalService extends Service {
             ErrorLogDao dao = db.errorLogDao();
 
             List<ErrorLog> errorLogs = dao.selectAllErrorLogs();
-            // TODO : 배포할 때는 삭제
             for (ErrorLog log : errorLogs) {
-                Log.d(LOG_TAG, "try to retrieve and send the local data : " + log.toString());
+                Log.d(LOG_TAG, "retrieve and send the local data : " + log.toString());
             }
             dao.deleteLogs();
             db.close();

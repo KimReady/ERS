@@ -2,13 +2,12 @@ package com.naver.error_reporting_sdk;
 
 import android.os.Bundle;
 
+import androidx.test.ext.junit.runners.AndroidJUnit4;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.RobolectricTestRunner;
 
-import static org.junit.Assert.*;
-
-@RunWith(RobolectricTestRunner.class)
+@RunWith(AndroidJUnit4.class)
 public class CustomDataTest {
 
     @Test
