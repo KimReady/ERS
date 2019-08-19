@@ -4,8 +4,6 @@ import android.os.Bundle;
 
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.naver.ers.CustomData;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -17,7 +15,7 @@ public class CustomDataTest {
         CustomData customData = new CustomData.Builder()
                 .putData("Test1", "Value1")
                 .build();
-        System.out.println(customData.getData());
+        System.out.println(customData);
     }
 
     @Test

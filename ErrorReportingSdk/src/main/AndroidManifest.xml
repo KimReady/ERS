@@ -1,13 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.naver.error_reporting_sdk">
+    package="com.naver.ers">
     <application>
         <service
             android:name=".SenderService"
             android:exported="false"
-            android:process=":ers" />
+            android:process=":ErsService" />
         <service
             android:name=".RetrieveLocalService"
             android:exported="false"
-            android:process=":ers" />
+            android:process=":ErsService" />
     </application>
 </manifest>

@@ -6,11 +6,6 @@ import android.app.Application;
 import androidx.test.core.app.ApplicationProvider;
 import androidx.test.ext.junit.runners.AndroidJUnit4;
 
-import com.naver.ers.CustomData;
-import com.naver.ers.LogLevel;
-import com.naver.ers.ReportInfo;
-import com.naver.ers.Reporter;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

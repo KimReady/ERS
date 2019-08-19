@@ -99,6 +99,22 @@ class LoggerImpl implements Logger {
     }
 
     @Override
+    public int wtf(String tag, String msg) {
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.ASSERT, tag, msg, null);
+        }
+        return Log.wtf(tag, msg);
+    }
+
+    @Override
+    public int wtf(String tag, String msg, Throwable tr) {
+        if(Reporter.getContext() != null) {
+            writeLog(LogLevel.ASSERT, tag, msg, tr);
+        }
+        return Log.wtf(tag, msg, tr);
+    }
+
+    @Override
     public String getStackTrace(Throwable tr) {
         return Log.getStackTraceString(tr);
     }

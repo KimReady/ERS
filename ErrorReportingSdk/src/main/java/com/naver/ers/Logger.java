@@ -19,5 +19,8 @@ public interface Logger {
     int e(String tag, String msg);
     int e(String tag, String msg, Throwable tr);
 
+    int wtf(String tag, String msg);
+    int wtf(String tag, String msg, Throwable tr);
+
     String getStackTrace(Throwable tr);
 }
