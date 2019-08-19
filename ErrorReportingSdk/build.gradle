@@ -1,4 +1,12 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
+
+def artifact = new Properties()
+artifact.load(new FileInputStream(file("deploy.settings")))
+
+version = artifact.version
+group = artifact.groupId
 
 android {
     compileSdkVersion 28
@@ -8,7 +16,7 @@ android {
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName artifact.version
 
         javaCompileOptions {
             annotationProcessorOptions {
@@ -33,12 +41,34 @@ android {
 
 }
 
+Properties properties = new Properties()
+properties.load(new FileInputStream(file('local.properties')))
+bintray {
+    user = properties.getProperty('BINTRAY_USERNAME')
+    key = properties.getProperty('BINTRAY_API_KEY')
+
+    configurations = ['archives']
+    pkg {
+        repo = properties.getProperty('BINTRAY_REPONAME')
+        name = properties.getProperty('BINTRAY_PKG')
+        userOrg = properties.getProperty('BINTRAY_ORG')
+        licenses = ["Apache-2.0"]
+
+        version {
+            name = artifact.version
+            released  = new Date()
+        }
+    }
+    publish = true
+
+}
+
 dependencies {
     def room_version = "2.1.0"
     implementation "androidx.room:room-runtime:$room_version"
     annotationProcessor "androidx.room:room-compiler:$room_version"
 
-    implementation 'com.naver.httpclientlib:HttpClientLib:0.3.0'
+    implementation 'com.naver.httpclientlib:HttpClientLib:0.3.1'
 
     testImplementation 'junit:junit:4.12'
     testImplementation 'org.robolectric:robolectric:4.3'
