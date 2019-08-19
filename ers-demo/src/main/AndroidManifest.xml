@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.naver.ers">
+    package="com.naver.ersDemo">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
-        android:name=".TestApplication"
+        android:name="com.naver.ersDemo.TestApplication"
         android:allowBackup="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,7 +15,7 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MainActivity">
+        <activity android:name="com.naver.ersDemo.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

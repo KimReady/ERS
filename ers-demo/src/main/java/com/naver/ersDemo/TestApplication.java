@@ -1,6 +1,9 @@
-package com.naver.ers;
+package com.naver.ersDemo;
 
 import android.app.Application;
+
+import com.naver.ers.CustomData;
+import com.naver.ers.Reporter;
 
 public class TestApplication extends Application {
 

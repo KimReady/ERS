@@ -2,4 +2,16 @@
     <string name="app_name">ERS</string>
     <string name="log">Log</string>
     <string name="crash">Crash</string>
+    <string name="tag">Tag</string>
+    <string name="message">Message</string>
+    <string name="log_level">Log Level</string>
+
+    <string-array name="log_level">
+        <item>VERBOSE</item>
+        <item>DEBUG</item>
+        <item>INFO</item>
+        <item>WARNING</item>
+        <item>ERROR</item>
+        <item>ASSERT</item>
+    </string-array>
 </resources>
