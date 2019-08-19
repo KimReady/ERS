@@ -12,7 +12,7 @@ import androidx.annotation.Nullable;
  * android service that executed via {@link Reporter#reportError(ReportInfo)}
  * Run {@link HttpSender} or {@link DBSender} using a separate thread
  */
-class SenderService extends Service {
+public class SenderService extends Service {
     private static final String LOG_TAG = SenderService.class.getSimpleName();
 
     private ReportInfo reportInfo;

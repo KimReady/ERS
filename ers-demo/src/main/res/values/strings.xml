@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">ERS</string>
+    <string name="log">Log</string>
+    <string name="crash">Crash</string>
+</resources>

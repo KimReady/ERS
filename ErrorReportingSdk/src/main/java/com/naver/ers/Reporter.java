@@ -10,7 +10,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.naver.error_reporting_sdk.R;
 import com.naver.httpclientlib.CallBack;
 import com.naver.httpclientlib.CallTask;
 import com.naver.httpclientlib.HttpClient;

@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
  * Service that checks if there is any log in the local DB that has not yet been sent to the server
  * if so, try sending to the server via {@link HttpSender}
  */
-class RetrieveLocalService extends Service {
+public class RetrieveLocalService extends Service {
     private static final String LOG_TAG = RetrieveLocalService.class.getSimpleName();
 
     private ScheduledExecutorService executor;

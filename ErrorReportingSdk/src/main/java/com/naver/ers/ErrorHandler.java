@@ -3,8 +3,6 @@ package com.naver.ers;
 import android.content.Context;
 import android.util.Log;
 
-import com.naver.error_reporting_sdk.R;
-
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
