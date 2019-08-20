@@ -23,8 +23,8 @@ public class ReporterTest {
     }
 
     @Test
-    public void registerContext() {
-        assertNotNull(Reporter.getContext());
+    public void registerApplication() {
+        assertNotNull(Reporter.getApplication());
     }
 
     @Test

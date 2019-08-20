@@ -1,7 +1,9 @@
 package com.naver.ers;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
 
 import androidx.room.Room;
@@ -14,13 +16,17 @@ import java.util.List;
 class DBSender implements Sender {
     private static final String LOG_TAG = DBSender.class.getSimpleName();
     private final Context context;
-    private final LogDatabase db;
-    private final ErrorLogDao dao;
+    private LogDatabase db;
+    private ErrorLogDao dao;
 
     DBSender(Context context) {
         this.context = context;
-        db = Room.databaseBuilder(context, LogDatabase.class, LogDatabase.DB_NAME).build();
-        dao = db.errorLogDao();
+        try {
+            db = Room.databaseBuilder(context, LogDatabase.class, LogDatabase.DB_NAME).build();
+            dao = db.errorLogDao();
+        } catch(RuntimeException e) {
+            Log.e(LOG_TAG, "occurred exception while calling Room DB.");
+        }
     }
 
     /**
@@ -31,8 +37,15 @@ class DBSender implements Sender {
         dao.insertErrorLog(errorLog);
         Log.d(LOG_TAG, "success to save the error.");
 
-        Intent intent = new Intent(context, RetrieveLocalService.class);
-        context.startService(intent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            RetrieveJobScheduler.setUpdateJob(context);
+        } else {
+            Intent intent = new Intent(context, RetrieveLocalService.class);
+            ComponentName service = context.startService(intent);
+            if (service == null) {
+                Log.w(LOG_TAG, "Failed to start the RetrieveLocalService.");
+            }
+        }
 
         db.close();
     }
@@ -45,8 +58,15 @@ class DBSender implements Sender {
         dao.insertErrorLogs(errorLogs);
         Log.d(LOG_TAG, "success to save the errors.");
 
-        Intent intent = new Intent(context, RetrieveLocalService.class);
-        context.startService(intent);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            RetrieveJobScheduler.setUpdateJob(context);
+        } else {
+            Intent intent = new Intent(context, RetrieveLocalService.class);
+            ComponentName service = context.startService(intent);
+            if (service == null) {
+                Log.w(LOG_TAG, "Failed to start the RetrieveLocalService.");
+            }
+        }
 
         db.close();
     }

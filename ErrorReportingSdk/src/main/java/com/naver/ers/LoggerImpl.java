@@ -20,7 +20,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int v(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.VERBOSE, tag, msg, null);
         }
         return Log.v(tag, msg);
@@ -28,7 +28,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int v(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.VERBOSE, tag, msg, tr);
         }
         return Log.v(tag, msg, tr);
@@ -36,7 +36,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int d(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.DEBUG, tag, msg, null);
         }
         return Log.d(tag, msg);
@@ -44,7 +44,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int d(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.DEBUG, tag, msg, tr);
         }
         return Log.d(tag, msg, tr);
@@ -52,7 +52,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int i(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.INFO, tag, msg, null);
         }
         return Log.i(tag, msg);
@@ -60,7 +60,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int i(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.INFO, tag, msg, tr);
         }
         return Log.i(tag, msg, tr);
@@ -68,7 +68,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int w(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.WARNING, tag, msg, null);
         }
         return Log.w(tag, msg);
@@ -76,7 +76,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int w(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.WARNING, tag, msg, tr);
         }
         return Log.w(tag, msg, tr);
@@ -84,7 +84,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int e(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.ERROR, tag, msg, null);
         }
         return Log.e(tag, msg);
@@ -92,7 +92,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int e(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.ERROR, tag, msg, tr);
         }
         return Log.e(tag, msg, tr);
@@ -100,7 +100,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int wtf(String tag, String msg) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.ASSERT, tag, msg, null);
         }
         return Log.wtf(tag, msg);
@@ -108,7 +108,7 @@ class LoggerImpl implements Logger {
 
     @Override
     public int wtf(String tag, String msg, Throwable tr) {
-        if(Reporter.getContext() != null) {
+        if(Reporter.getApplication() != null) {
             writeLog(LogLevel.ASSERT, tag, msg, tr);
         }
         return Log.wtf(tag, msg, tr);
@@ -128,7 +128,7 @@ class LoggerImpl implements Logger {
                           @NonNull String msg,
                           @Nullable Throwable tr) {
         String stackTrace = Util.parseString(tr);
-        ReportInfo reportInfo = new ReportInfo.Builder(Reporter.getContext())
+        ReportInfo reportInfo = new ReportInfo.Builder(Reporter.getApplication())
                 .logLevel(level.name())
                 .tag(tag)
                 .message(msg)

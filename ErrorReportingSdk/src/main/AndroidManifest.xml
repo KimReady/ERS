@@ -4,10 +4,15 @@
         <service
             android:name=".SenderService"
             android:exported="false"
-            android:process=":ErsService" />
+            android:process=":service" />
+        <service
+            android:name=".RetrieveJobService"
+            android:exported="false"
+            android:permission="android.permission.BIND_JOB_SERVICE"
+            android:process=":service" />
         <service
             android:name=".RetrieveLocalService"
             android:exported="false"
-            android:process=":ErsService" />
+            android:process=":service" />
     </application>
 </manifest>

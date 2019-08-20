@@ -12,7 +12,7 @@ import android.provider.Settings.Secure;
  * couldn't instantiate this class with constructor
  * it uses bundle for serialization and deserialization
  */
-public final class ReportInfo {
+class ReportInfo {
     private static final int SDK_VERSION = Build.VERSION.SDK_INT;
     private static final String PHONE_BRAND = Build.BRAND;
     private static final String PHONE_MODEL = Build.MODEL;
@@ -54,15 +54,15 @@ public final class ReportInfo {
         return androidId;
     }
 
-    int getSdkVersion() {
+    static int getSdkVersion() {
         return SDK_VERSION;
     }
 
-    String getPhoneBrand() {
+    static String getPhoneBrand() {
         return PHONE_BRAND;
     }
 
-    String getPhoneModel() {
+    static String getPhoneModel() {
         return PHONE_MODEL;
     }
 

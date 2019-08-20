@@ -1,12 +1,12 @@
 package com.naver.ers;
 
-import android.app.Service;
+import android.app.job.JobParameters;
+import android.app.job.JobService;
 import android.content.Context;
-import android.content.Intent;
-import android.os.IBinder;
+import android.os.Build;
 import android.util.Log;
 
-import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.room.Room;
 
 import java.lang.ref.WeakReference;
@@ -15,50 +15,51 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-/**
- * Service that checks if there is any log in the local DB that has not yet been sent to the server
- * if so, try sending to the server via {@link HttpSender}
- */
-public class RetrieveLocalService extends Service {
-    private static final String LOG_TAG = RetrieveLocalService.class.getSimpleName();
+@RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+public class RetrieveJobService extends JobService {
+    private static final String LOG_TAG = RetrieveJobService.class.getSimpleName();
 
     private static final int INIT_DELAY = 0;
     private static final int PERIOD = 30;
 
     private ScheduledExecutorService executor;
-    private final WeakReference<Context> contextWeakReference;
+    private WeakReference<Context> contextWeakReference;
 
-    RetrieveLocalService() {
+    @Override
+    public void onCreate() {
+        super.onCreate();
         contextWeakReference = new WeakReference<Context>(this);
     }
 
-    /**
-     * search the log in local db every 30 seconds using ScheduledExecutorService
-     */
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public boolean onStartJob(JobParameters params) {
         if(executor != null && !executor.isShutdown()) {
-            Log.d(LOG_TAG, "RetrieveLocalService has already been running.");
-            return START_STICKY;
+            Log.d(LOG_TAG, "RetrieveJobService has already been running.");
+            return true;
         }
+
         executor = Executors.newScheduledThreadPool(1);
         Log.d(LOG_TAG, "start to retrieve Error logs in DB.");
 
-        executor.scheduleAtFixedRate(new DBTask(), INIT_DELAY, PERIOD, TimeUnit.SECONDS);
+        executor.scheduleAtFixedRate(new DBTask(params), INIT_DELAY, PERIOD, TimeUnit.SECONDS);
 
-        return START_STICKY;
+        return true;
     }
 
-    @Nullable
     @Override
-    public IBinder onBind(Intent intent) {
-        return null;
+    public boolean onStopJob(JobParameters params) {
+        return false;
     }
 
     /**
      * Runnable object for ScheduledExecutorService
      */
     private class DBTask implements Runnable {
+        private JobParameters params;
+
+        private DBTask(JobParameters params) {
+            this.params = params;
+        }
         /**
          * search and extract DB
          * if there is any log, execute {@link HttpSender} for sending it to server
@@ -89,7 +90,7 @@ public class RetrieveLocalService extends Service {
                 if (errorLogs.isEmpty()) {
                     Log.d(LOG_TAG, "Retrieve Service shut down.");
                     executor.shutdownNow();
-                    stopSelf();
+                    jobFinished(params, false);
                     return;
                 }
 
@@ -97,7 +98,7 @@ public class RetrieveLocalService extends Service {
             } catch(Exception e) {
                 Log.e(LOG_TAG, "occurred Exception while running DBTask : " + e.getMessage());
                 executor.shutdownNow();
-                stopSelf();
+                jobFinished(params, false);
             }
         }
     }

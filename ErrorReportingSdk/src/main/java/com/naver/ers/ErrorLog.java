@@ -11,6 +11,8 @@ import java.util.Date;
 
 /**
  * store the crash data or custom log
+ * '@ColumnInfo' is used for {@link androidx.room}
+ * '@SerializedName' is used for {@link com.google.gson}
  */
 @Entity(tableName = "error_log", primaryKeys = {"android_id", "reg_date"})
 class ErrorLog {
@@ -112,9 +114,9 @@ class ErrorLog {
         this.androidId = reportInfo.getAndroidId();
         this.packageName = reportInfo.getPackageName();
         this.appVersion = Reporter.getAppVersion();
-        this.sdkVersion = reportInfo.getSdkVersion();
-        this.phoneBrand = reportInfo.getPhoneBrand();
-        this.phoneModel = reportInfo.getPhoneModel();
+        this.sdkVersion = ReportInfo.getSdkVersion();
+        this.phoneBrand = ReportInfo.getPhoneBrand();
+        this.phoneModel = ReportInfo.getPhoneModel();
         this.logLevel = reportInfo.getLogLevel();
         this.tag = reportInfo.getTag();
         this.message = reportInfo.getMessage();
@@ -208,5 +210,26 @@ class ErrorLog {
             isCorrectDate = true;
         }
         return cal.getTime();
+    }
+
+    @Override
+    public String toString() {
+        return "ErrorLog{" +
+                "regDate='" + regDate + '\'' +
+                ", androidId='" + androidId + '\'' +
+                ", packageName='" + packageName + '\'' +
+                ", appVersion='" + appVersion + '\'' +
+                ", sdkVersion=" + sdkVersion +
+                ", phoneBrand='" + phoneBrand + '\'' +
+                ", phoneModel='" + phoneModel + '\'' +
+                ", logLevel='" + logLevel + '\'' +
+                ", tag='" + tag + '\'' +
+                ", message='" + message + '\'' +
+                ", stackTrace='" + stackTrace + '\'' +
+                ", availableMemory=" + availableMemory +
+                ", totalMemory=" + totalMemory +
+                ", customData='" + customData + '\'' +
+                ", isCorrectDate=" + isCorrectDate +
+                '}';
     }
 }

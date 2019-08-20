@@ -15,13 +15,15 @@ import java.util.List;
  */
 class HttpSender implements Sender {
     private static final String LOG_TAG = HttpSender.class.getSimpleName();
+    private static final String SERVER_URL = "http://10.66.83.42:8000";
+
     private final Context context;
     private final HttpService httpService;
 
     HttpSender(Context context) {
         this.context = context;
         HttpClient httpClient = new HttpClient.Builder()
-                .baseUrl(context.getResources().getString(R.string.server_url))
+                .baseUrl(SERVER_URL)
                 .build();
         httpService = httpClient.create(HttpService.class);
     }
