@@ -24,7 +24,7 @@ class RetrieveJobScheduler {
         scheduler.schedule(job);
     }
 
-    static boolean isJobServiceOn(Context context) {
+    private static boolean isJobServiceOn(Context context) {
         JobScheduler scheduler = (JobScheduler) context.getSystemService(Context.JOB_SCHEDULER_SERVICE);
 
         boolean hasBeenScheduled = false;

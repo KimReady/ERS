@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ERS</string>
+    <string name="app_name">ERS-sample</string>
     <string name="log">Log</string>
     <string name="crash">Crash</string>
     <string name="tag">Tag</string>
