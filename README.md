@@ -1,6 +1,6 @@
 Error Reporting SDK
 ==========
-Error Reporting SDK(이하 ERS)는 Android 앱에서 발생하는 Crash나 개발자가 기록하고자 하는 Log를 서버에 보고할 수 있게 해주는 라이브러리입니다.
+Error Reporting SDK(이하 ERS)는 Android 앱에서 발생하는 Crash나 개발자가 기록하고자 하는 Log를 서버에 보고할 수 있게 해주는 라이브러리입니다.  
 Android API 16버전부터 지원합니다.
 
 ERS는 다음과 같은 특징이 있습니다.
