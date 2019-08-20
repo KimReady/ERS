@@ -27,7 +27,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class Reporter {
     private static final String LOG_TAG = Reporter.class.getSimpleName();
-    private static final int CALL_TIMEOUT = 500;
 
     private static int diffTimeWithServer;
     private static AtomicBoolean hasDiffTime = new AtomicBoolean(false);
@@ -126,7 +125,6 @@ public final class Reporter {
 
         HttpClient httpClient = new HttpClient.Builder()
                 .baseUrl(context.getResources().getString(R.string.server_url))
-                .callTimeout(CALL_TIMEOUT, TimeUnit.MILLISECONDS)
                 .build();
         HttpService httpService = httpClient.create(HttpService.class);
 
