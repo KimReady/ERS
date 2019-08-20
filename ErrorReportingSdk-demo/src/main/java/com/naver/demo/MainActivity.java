@@ -1,4 +1,4 @@
-package com.naver.ersDemo;
+package com.naver.demo;
 
 import androidx.appcompat.app.AppCompatActivity;
 
