@@ -1,7 +1,5 @@
 package com.naver.ers;
 
-import com.naver.ers.Util;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;

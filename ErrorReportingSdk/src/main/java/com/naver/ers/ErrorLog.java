@@ -209,25 +209,4 @@ class ErrorLog {
         }
         return cal.getTime();
     }
-
-    @Override
-    public String toString() {
-        return "ErrorLog {" +
-                "regDate=" + regDate +
-                ", androidId='" + androidId + '\'' +
-                ", packageName='" + packageName + '\'' +
-                ", appVersion='" + appVersion + '\'' +
-                ", sdkVersion=" + sdkVersion +
-                ", phoneBrand='" + phoneBrand + '\'' +
-                ", phoneModel='" + phoneModel + '\'' +
-                ", logLevel='" + logLevel + '\'' +
-                ", tag='" + tag + '\'' +
-                ", message='" + message + '\'' +
-                ", stackTrace='" + stackTrace + '\'' +
-                ", availableMemory=" + availableMemory +
-                ", totalMemory=" + totalMemory +
-                ", customData=" + customData +
-                ", isCorrectDate=" + isCorrectDate +
-                '}';
-    }
 }

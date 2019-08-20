@@ -111,24 +111,6 @@ public final class ReportInfo {
         return bundle;
     }
 
-    @Override
-    public String toString() {
-        return "ReportInfo{" +
-                "sdkVersion=" + SDK_VERSION +
-                ", phoneBrand='" + PHONE_BRAND + '\'' +
-                ", phoneModel='" + PHONE_MODEL + '\'' +
-                ", androidId='" + androidId + '\'' +
-                ", packageName='" + packageName + '\'' +
-                ", logLevel='" + logLevel + '\'' +
-                ", tag='" + tag + '\'' +
-                ", message='" + message + '\'' +
-                ", StackTrace='" + stackTrace + '\'' +
-                ", context=" + context +
-                ", availableMemory=" + availableMemory +
-                ", totalMemory=" + totalMemory +
-                '}';
-    }
-
     /**
      * it is used to make a instance of ReportInfo
      */
