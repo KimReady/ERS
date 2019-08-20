@@ -24,8 +24,9 @@ ERS는 다음과 같은 특징이 있습니다.
 * 사용자는 이외에도 추가적인 key-value 형식으로 Custom Data를 구성하여 함께 기록할 수 있습니다.
 
 Dependency 추가
-=====
-###Gradle
+======
+
+### Gradle
 프로젝트 루트 수준의 build.gradle에 Maven URL을 추가해주세요.
 
 ```groovy
