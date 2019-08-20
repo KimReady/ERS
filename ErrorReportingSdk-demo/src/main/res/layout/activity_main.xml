@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.naver.demo.MainActivity">
+    tools:context="com.naver.demo.com.example.demo.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:context="com.naver.demo.MainActivity">
+        tools:context="com.naver.demo.com.example.demo.MainActivity">
 
         <TextView
             android:id="@+id/tag_textview"

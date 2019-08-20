@@ -1,4 +1,4 @@
-package com.naver.demo;
+package com.sample.ers;
 
 import android.app.Application;
 
