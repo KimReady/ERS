@@ -13,11 +13,4 @@ class ServerTime {
     String getCurrentTime() {
         return currentTime;
     }
-
-    @Override
-    public String toString() {
-        return "ServerTime{" +
-                "currentTime='" + currentTime + '\'' +
-                '}';
-    }
 }

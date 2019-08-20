@@ -18,7 +18,6 @@ allprojects {
         google()
         jcenter()
         maven { url "https://dl.bintray.com/naver/HttpClientLib" }
-        maven { url "https://dl.bintray.com/naver/Ers" }
     }
 }
 

@@ -1,1 +1,1 @@
-include ':ers-demo', ':ErrorReportingSdk'
+include ':ErrorReportingSdk-demo', ':ErrorReportingSdk'

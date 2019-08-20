@@ -28,6 +28,7 @@
             android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
+            android:inputType="text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tag_textview" />
 
@@ -48,6 +49,7 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_margin="30dp"
+            android:inputType="text"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@id/msg_textview" />
 

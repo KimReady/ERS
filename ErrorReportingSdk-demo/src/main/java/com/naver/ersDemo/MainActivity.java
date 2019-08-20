@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.naver.ers.LogLevel;
 import com.naver.ers.Reporter;
@@ -64,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                         Reporter.log.wtf(tag, msg, tr);
                         break;
                 }
+                Toast.makeText(getBaseContext(), "logging", Toast.LENGTH_SHORT).show();
             } else if(v.getId() == crashBtn.getId()) {
                 throw new AssertionError("Test Crash");
             }
