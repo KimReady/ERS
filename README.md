@@ -41,7 +41,7 @@ allprojects {
 
 ```groovy
 dependencies {
-    implementation 'com.naver.ers:ErrorReportingSdk:0.1.0'
+    implementation 'com.naver.ers:ErrorReportingSdk:0.1.3'
 }
 ```
 
@@ -62,7 +62,7 @@ dependencies {
   <dependency>
     <groupId>com.naver.ersb</groupId>
     <artifactId>ErrorReportingSdk</artifactId>
-    <version>0.1.0</version>
+    <version>0.1.3</version>
     <type>pom</type>
   </dependency>
 </dependencies>

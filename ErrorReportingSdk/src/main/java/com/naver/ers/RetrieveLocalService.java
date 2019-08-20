@@ -26,9 +26,10 @@ public class RetrieveLocalService extends Service {
     private static final int PERIOD = 30;
 
     private ScheduledExecutorService executor;
-    private final WeakReference<Context> contextWeakReference;
+    private WeakReference<Context> contextWeakReference;
 
-    RetrieveLocalService() {
+    @Override
+    public void onCreate() {
         contextWeakReference = new WeakReference<Context>(this);
     }
 
