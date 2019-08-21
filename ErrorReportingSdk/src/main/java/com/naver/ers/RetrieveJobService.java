@@ -48,6 +48,7 @@ public class RetrieveJobService extends JobService {
 
     @Override
     public boolean onStopJob(JobParameters params) {
+        finish(params);
         return false;
     }
 
@@ -89,17 +90,23 @@ public class RetrieveJobService extends JobService {
 
                 if (errorLogs.isEmpty()) {
                     Log.d(LOG_TAG, "Retrieve Service shut down.");
-                    executor.shutdownNow();
-                    jobFinished(params, false);
+                    finish(params);
                     return;
                 }
 
                 new HttpSender(context).send(errorLogs);
             } catch(Exception e) {
                 Log.e(LOG_TAG, "occurred Exception while running DBTask : " + e.getMessage());
-                executor.shutdownNow();
-                jobFinished(params, false);
+                finish(params);
             }
         }
+    }
+
+    private void finish(JobParameters params) {
+        if(executor != null) {
+            executor.shutdownNow();
+        }
+        jobFinished(params, false);
+        stopSelf();
     }
 }
